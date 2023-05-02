@@ -1,0 +1,180 @@
+@use "../abstracts" as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+a{
+  text-decoration: none;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  min-height: 100vh;
+
+  // Text :
+  font-family: $font-family;
+  color: $color-text;
+  font-size: $size-text;
+  font-weight: $font-weight-text;
+  line-height: $line-height-text;
+  letter-spacing: $letter-spacing-text;
+  $font-style-text: $font-style-text;
+
+  // Background :
+  background-color: $color-background;
+}
+
+#__next {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) 68px;
+  grid-template-rows: 68px repeat(4, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+
+  @include bp("tablette") {
+    grid-template-columns: repeat(4, 1fr) 250px;
+  }
+}
+
+// Header :
+header {
+  background-color: $color-background-header;
+  display: flex;
+  align-items: center;
+
+  grid-area: 1 / 1 / 1 / 5;
+}
+
+nav {
+  background-color: $color-background-nav-head;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  grid-area: 1 / 5 / 1 / 6;
+}
+
+#NavDesktop {
+  background: #343333;
+  grid-area: 2 / 5 / 6 / 6;
+
+  button {
+    margin-top: 35px;
+    width: 100px;
+    height: 30px;
+    background: #4b4746;
+    border-radius: 10px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button:active {
+    border: 0.5px solid #db8656;
+  }
+}
+
+h3 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+
+  color: #ffffff;
+}
+
+.sub {
+  width: 100%;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+
+  color: #848484;
+
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow : ellipsis;
+}
+
+.line {
+  width: 100%;
+  height: 2px;
+  background: #343333;
+  border-radius: 1px;
+}
+
+main {
+  grid-area: 2 / 1 / 6 / 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include bp("tablette") {
+    grid-area: 2 / 1 / 6 / 5;
+  }
+
+  #connectedUsers {
+    width: 100%;
+    height: 100%;
+    padding: 75px 120px 75px 120px;
+
+    ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+
+      li {
+        width: 100%;
+        height: 60px;
+
+        .link{
+          display: flex;
+          width: 100%;
+          height: 100%;
+        }
+
+        .svg {
+          margin-top: 10px;
+        }
+
+        .contentUser {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          height: 100%;
+          margin-left: 20px;
+          text-overflow: ellipsis;
+
+          @include bp("tablette") {
+            margin-left: 50px;
+          }
+        }
+      }
+    }
+  }
+}
