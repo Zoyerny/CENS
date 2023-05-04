@@ -1,14 +1,16 @@
-import Layout from "@/components/Layout";
-import "../styles/style.scss";
-import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
-import { AuthProvider, useAuth } from "@/utils/contexts/auth-context";
+
+import { ApolloProvider } from "@apollo/client";
 import { client } from "@/utils/appollo/apolloClient";
-import React from "react";
-import { SocketProvider } from "@/utils/contexts/socket-context";
+import { AuthProvider } from "@/utils/contexts/auth-context";
 import { HandlerProvider } from "@/utils/contexts/handler-context";
+import { SocketProvider } from "@/utils/contexts/socket-context";
+import Layout from "@/components/Layout";
+
+import "../styles/style.scss";
 
 export default function App({ Component, pageProps }: AppProps) {
+
   return (
     <ApolloProvider client={client}>
       <AuthProvider>

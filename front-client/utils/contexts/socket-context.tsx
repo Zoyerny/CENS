@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "@/utils/contexts/auth-context";
 import { Socket, io } from "socket.io-client";
 import { ClientToServerId, ServerToClientId } from "../socket/socket.enums";
@@ -14,11 +7,13 @@ import { useHandler } from "./handler-context";
 export interface SocketContextType {
   isConnected: boolean;
   sendMessage: (type: ClientToServerId, data?: string) => void;
+  disconnected: () => void;
 }
 
 const SocketContext = createContext<SocketContextType>({
   isConnected: false,
   sendMessage: () => {},
+  disconnected: () => {},
 });
 
 interface SocketProviderProps {
@@ -30,11 +25,10 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [isConnected, setIsConnected] = useState(socket?.connected ?? false);
   const { setOnlineUsers, setOfflineUsers } = useHandler();
 
-  const { user, accessToken, refreshToken } = useAuth();
+  const { user } = useAuth();
 
   const sendMessage = (type: ClientToServerId, data?: string) => {
     if (socket) {
-      console.log("Message envoye <3");
       socket.emit("messageToServer", {
         type,
         data,
@@ -42,12 +36,16 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     }
   };
 
+  const disconnected = () => {
+    if (socket) {
+      socket.disconnect();
+    }
+  };
+
   useEffect(() => {
-    if (accessToken && refreshToken && user?.id) {
+    if ( user?.id && !socket) {
       const socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL!, {
         query: {
-          token: accessToken,
-          refreshToken: refreshToken,
           userId: user?.id,
         },
       });
@@ -96,7 +94,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   }, [socket]);
 
   return (
-    <SocketContext.Provider value={{ isConnected, sendMessage }}>
+    <SocketContext.Provider value={{ isConnected, sendMessage, disconnected }}>
       {children}
     </SocketContext.Provider>
   );

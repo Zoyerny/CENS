@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { setCookie, parseCookies } from "nookies";
+import { createContext, useContext, useEffect, useState } from "react";
+import { setCookie, parseCookies, destroyCookie } from "nookies";
 
 export interface UserType {
   id: string;
@@ -10,25 +10,17 @@ export interface UserType {
 export interface AuthContextType {
   user: UserType | null;
   loading: boolean;
-  accessToken: string | null;
-  refreshToken: string | null;
 
   setUser: (user: UserType | null) => void;
   setLoading: (loading: boolean) => void;
-  setAccessToken: (token: string | null) => void;
-  setRefreshToken: (token: string | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: false,
-  accessToken: null,
-  refreshToken: null,
 
   setUser: () => {},
   setLoading: () => {},
-  setAccessToken: () => {},
-  setRefreshToken: () => {},
 });
 
 interface AuthProviderProps {
@@ -38,26 +30,10 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
-  const { cookieAccessToken, cookieRefreshToken, cookieUser } = parseCookies();
+  const { cookieUser } = parseCookies();
 
   useEffect(() => {
-    /*console.log(
-      "cookieAccessToken, cookieRefreshToken, cookieUser",
-      cookieAccessToken,
-      cookieRefreshToken,
-      cookieUser
-    );*/
-    if (cookieAccessToken) {
-      setAccessToken(cookieAccessToken);
-    }
-
-    if (cookieRefreshToken) {
-      setRefreshToken(cookieRefreshToken);
-    }
-
     if (cookieUser) {
       setUser(JSON.parse(cookieUser));
     }
@@ -65,37 +41,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    /*console.log(
+    console.log(
+      "updateCookie",
       "user, accessToken, refreshToken",
       user,
-      accessToken,
-      refreshToken
-    );*/
+    );
 
     if (user) {
       setCookie(null, "cookieUser", JSON.stringify(user), {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
+    } else {
+      if (!loading) {
+        destroyCookie(undefined, "cookieUser");
+      }
     }
 
-    if (accessToken) {
-      setCookie(null, "cookieAccessToken", accessToken, {
-        maxAge: 60 * 60,
-        path: "/",
-      });
-    }
+  }, [user]);
 
-    if (refreshToken) {
-      setCookie(null, "cookieRefreshToken", refreshToken, {
-        maxAge: 7 * 24 * 60 * 60,
-        path: "/",
-      });
-    }
-  }, [user, accessToken, refreshToken]);
-
-  if (loading){
-    return <p>Loading...</p>
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -103,13 +69,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       value={{
         user,
         loading,
-        accessToken,
-        refreshToken,
 
         setUser,
         setLoading,
-        setAccessToken,
-        setRefreshToken,
       }}
     >
       {children}

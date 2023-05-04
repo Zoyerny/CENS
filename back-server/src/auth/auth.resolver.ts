@@ -49,7 +49,6 @@ export class AuthResolver {
   }
 
   // Mutation pour déconnecter un utilisateur
-  @Public()
   @Mutation(() => LogoutReponse)
   logout(@Args('id', { type: () => String }) id: string) {
     // Call the AuthService to logout a user
@@ -62,19 +61,15 @@ export class AuthResolver {
     return 'Hello world !';
   }
 
-  // Mutation pour générer de nouveaux jetons d'accès et d'actualisation
-  // pour un utilisateur ayant un jeton d'actualisation valide
   @Public()
   @UseGuards(RefreshTokenGuard)
   @Mutation(() => NewTokenReponse)
   getNewTokens(
     @CurrentUserId() userId: string,
-    @CurrentUser('refreshToken') refreshToken: string,
-    @Args('refreshToken', { type: () => String }) refreshTokenArg: string,
+    @CurrentUser('refreshToken') refreshToken : string,
   ) {
-    // Appelle le service AuthService pour générer de nouveaux jetons
     return this.authService.getNewTokens(userId, refreshToken);
   }
-  
+
 
 }

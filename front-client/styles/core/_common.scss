@@ -1,26 +1,128 @@
-@use '../abstracts/' as *;
+@use "../abstracts" as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+a{
+  text-decoration: none;
+  color: #000000;
+}
 
 body {
-    min-height: 100vh;
-  
-    // Text :
-    font-family: $font-family;
-    color: $color-text;
-    font-size: $size-text;
-    font-weight: $font-weight-text;
-    line-height: $line-height-text;
-    letter-spacing: $letter-spacing-text;
-    $font-style-text: $font-style-text;
-  
-    // Background :
-    background-color: $color-background;
+  min-height: 100vh;
+
+  background: $color-main;
+  font-family: $p-font-family;
+  font-weight: $p-font-weight;
+  font-size: $p-font-size;
+  color: $p-color;
+
+  @include bp("tablette") {
+    font-size: $p-font-size-pc;
   }
-  
-  #__next {
-    height: 100vh;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr) 68px;
-    grid-template-rows: 68px repeat(4, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+}
+
+#__next {
+  min-height: 100vh;
+}
+
+h1{
+  font-family: $h1-font-family;
+  font-weight: $h1-font-weight;
+  font-size: $h1-font-size;
+  color: $h1-color;
+
+  @include bp("tablette") {
+    font-size: $h1-font-size-pc;
   }
+}
+
+h2{
+  font-family: $h2-font-family;
+  font-weight: $h2-font-weight;
+  font-size: $h2-font-size;
+  color: $h2-color;
+
+  @include bp("tablette") {
+    font-size: $h2-font-size-pc;
+  }
+}
+
+h3{
+  font-family: $h3-font-family;
+  font-weight: $h3-font-weight;
+  font-size: $h3-font-size;
+  color: $h3-color;
+
+  @include bp("tablette") {
+    font-size: $h3-font-size-pc;
+  }
+}
+
+h4{
+  font-family: $h4-font-family;
+  font-weight: $h4-font-weight;
+  font-size: $h4-font-size;
+  color: $h4-color;
+
+  @include bp("tablette") {
+    font-size: $h4-font-size-pc;
+  }
+}
+
+h5{
+  font-family: $h5-font-family;
+  font-weight: $h5-font-weight;
+  font-size: $h5-font-size;
+  color: $h5-color;
+
+  @include bp("tablette") {
+    font-size: $h5-font-size-pc;
+  }
+}
+
+p{
+  font-family: $p-font-family;
+  font-weight: $p-font-weight;
+  font-size: $p-font-size;
+  color: $p-color;
+
+  @include bp("tablette") {
+    font-size: $p-font-size-pc;
+  }
+}
+
+.medium{
+  font-family: $m-font-family;
+  font-weight: $m-font-weight;
+  font-size: $m-font-size;
+  color: $m-color;
+
+  @include bp("tablette") {
+    font-size: $m-font-size-pc;
+  }
+}
+
+.big{
+  font-family: $b-font-family;
+  font-weight: $b-font-weight;
+  font-size: $b-font-size;
+  color: $b-color;
+
+  @include bp("tablette") {
+    font-size: $b-font-size-pc;
+  }
+}

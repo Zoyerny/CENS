@@ -38,8 +38,6 @@ export class AuthService {
     );
 
     await this.updateRefreshToken(user.id.toString(), refreshToken);
-    await this.setOnlineStatus(user.id, true);
-    await this.logout(user.id)
 
     return { accessToken, refreshToken, user };
   }
@@ -70,7 +68,6 @@ export class AuthService {
     );
 
     await this.updateRefreshToken(user.id.toString(), refreshToken);
-    await this.setOnlineStatus(user.id, true);
     return { accessToken, refreshToken, user };
   }
 
@@ -131,7 +128,7 @@ export class AuthService {
       data: { hashedRefreshToken: null },
     });
 
-    try{
+    try {
       const existingOnlineUser = await this.prisma.onlineUser.findUnique({
         where: { userId },
       });
@@ -143,7 +140,7 @@ export class AuthService {
           },
         });
       }
-    }catch(error){
+    } catch (error) {
 
     }
 
@@ -163,40 +160,25 @@ export class AuthService {
     return onlineUser?.userId;
   }
 
-  async getNewTokens(userId: string, rt: string) {
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+  async getRefreshTokens(userId: string) {
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid user');
-    }
-
-    const refreshTokenPayload = await this.jwtService.verifyAsync<{
-      userId: string;
-    }>(rt, {
-      secret: this.configService.get('REFRESH_TOKEN_SECRET'),
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
     });
 
-    if (refreshTokenPayload.userId !== userId) {
-      throw new UnauthorizedException('Invalid refresh token');
-    }
-
-    const isRefreshTokenMatching = await argon.verify(   
-      user.hashedRefreshToken,
-      rt,
-    );
-
-    if (!isRefreshTokenMatching) {
-      throw new UnauthorizedException('Invalid refresh token');
+    if (!user) {
+      throw new ForbiddenException('User doesent exixt');
     }
 
     const { accessToken, refreshToken } = await this.createTokens(
       user.id.toString(),
       user.email,
     );
-
     await this.updateRefreshToken(user.id.toString(), refreshToken);
-    return { accessToken, refreshToken };
-    
+    return { accessToken, refreshToken, user };
+
   }
 
   async setOnlineStatus(userId: string, isOnline: boolean) {
@@ -234,6 +216,32 @@ export class AuthService {
         },
       });
     }
+  }
+
+  async getNewTokens(userId:string, rt:string){
+    const user = await this.prisma.user.findUnique({
+      where : {id: userId},
+    });
+
+    if (!user){
+      throw new ForbiddenException('Access Denied');
+    }
+
+    const doRefreshTokensMatch = await argon.verify(
+      user.hashedRefreshToken,
+      rt,
+    );
+    if (!doRefreshTokensMatch){
+      throw new ForbiddenException ('access Denied');
+    }
+
+    const {accessToken, refreshToken} = await this.createTokens(
+      user.id,
+      user.email,
+    );
+
+    await this.updateRefreshToken(user.id, refreshToken);
+    return {accessToken, refreshToken, user};
   }
 
 

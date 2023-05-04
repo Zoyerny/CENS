@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NavDesktop from "./nav/NavDesktop";
 import NavSettings from "./nav/NavSettings";
 import NavMobile from "./nav/NavMobile";
 
 export default function Nav() {
   const [isMobile, setIsMobile] = useState(false);
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -23,36 +22,17 @@ export default function Nav() {
     <>
       {isMobile ? (
         <nav>
-          <NavMobile/>
+          <NavMobile />
         </nav>
       ) : (
         <>
-          <nav></nav>
-          <NavDesktop>
-            <NavSettings/>
-          </NavDesktop>
+          <nav>
+            <NavDesktop>
+              <NavSettings />
+            </NavDesktop>
+          </nav>
         </>
       )}
     </>
   );
 }
-
-
-/*import { useMutation } from "@apollo/client";
-import { LOGOUT_MUTATION } from "@/graphql/logoutMutation";
-
-const { user } = useUser();
-
-const [logoutMutation] = useMutation(LOGOUT_MUTATION);
-
-const handleLogout = async () => {
-  try {
-    await logoutMutation({ variables: { userId: user.id } });
-    setUser(null);
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("refreshToken");
-    // Redirigez l'utilisateur vers la page de connexion
-  } catch (error) {
-    console.error("Error during logout:", error);
-  }
-};*/
