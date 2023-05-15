@@ -1,0 +1,173 @@
+@use "../../abstracts" as *;
+
+#home {
+  header {
+    width: 100%;
+    height: 600px;
+
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include bp("laptop") {
+      height: 800px;
+    }
+
+    .slide {
+      padding-top: 30px;
+      width: 100%;
+      height: 700px;
+      background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.2) 0%,
+          rgba(0, 0, 0, 0.8) 100%
+        ),
+        url("/images/Slider1.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        @include bp("laptop") {
+          padding-top: 100px;
+        }
+
+        h1{
+          margin-left: 10px;
+          margin-right: 10px;
+
+          @include bp("computer") {
+            margin-left: 350px;
+            margin-right: 350px;
+          }
+        }
+    }
+  }
+
+  section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #articleBack {
+    background-color: $color-Secondary;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 10px 10px;
+    margin-bottom: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+
+    @include bp("computer") {
+      padding-right: 130px;
+      padding-left: 130px;
+    }
+    
+
+    h2 {
+      padding-bottom: 20px;
+    }
+
+    article {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 50px;
+
+      @include bp("laptop") {
+        flex-direction: row;
+      }
+
+      .article {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          border-radius: 50%;
+        }
+
+        .contentArticle {
+          background: rgba($color: #ecebf0, $alpha: 0.5);
+          position: absolute;
+          width: 150px;
+          height: 150px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+
+          border-radius: 50px;
+          padding: 10px;
+        }
+      }
+    }
+  }
+
+  #presentation {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+
+    @include bp("laptop") {
+      flex-direction: row;
+    }
+    @include bp("computer") {
+      padding-right: 130px;
+      padding-left: 130px;
+    }
+
+    article{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        @include bp("laptop") {
+          justify-content: center;
+          width: 50%;
+
+          p{
+            width: 80%;
+          }
+        }
+    }
+
+    .imgRandom{
+        position: relative;
+        width: 100%;
+        height: 500px;
+
+        @include bp("laptop") {
+          width: 50%;
+        }
+
+        img{
+            position: absolute;
+            border-radius: 50%;
+        }
+        img:nth-child(1){
+            top: 0;
+            left: 0;
+        }
+        img:nth-child(2){
+            top: 150px;
+            right: 0;
+        }
+        img:nth-child(3){
+            bottom: 0;
+            left: 0;
+        }
+    }
+  }
+}

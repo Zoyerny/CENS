@@ -40,17 +40,21 @@ body {
 }
 
 h1{
+  margin: 0;
+  padding: 0;
   font-family: $h1-font-family;
   font-weight: $h1-font-weight;
   font-size: $h1-font-size;
   color: $h1-color;
 
-  @include bp("tablette") {
+  @include bp("laptop") {
     font-size: $h1-font-size-pc;
   }
 }
 
 h2{
+  margin: 0;
+  padding: 0;
   font-family: $h2-font-family;
   font-weight: $h2-font-weight;
   font-size: $h2-font-size;
@@ -62,6 +66,8 @@ h2{
 }
 
 h3{
+  margin: 0;
+  padding: 0;
   font-family: $h3-font-family;
   font-weight: $h3-font-weight;
   font-size: $h3-font-size;
@@ -73,6 +79,8 @@ h3{
 }
 
 h4{
+  margin: 0;
+  padding: 0;
   font-family: $h4-font-family;
   font-weight: $h4-font-weight;
   font-size: $h4-font-size;
@@ -84,6 +92,8 @@ h4{
 }
 
 h5{
+  margin: 0;
+  padding: 0;
   font-family: $h5-font-family;
   font-weight: $h5-font-weight;
   font-size: $h5-font-size;
@@ -95,6 +105,8 @@ h5{
 }
 
 p{
+  margin: 0;
+  padding: 0;
   font-family: $p-font-family;
   font-weight: $p-font-weight;
   font-size: $p-font-size;
@@ -106,6 +118,8 @@ p{
 }
 
 .medium{
+  margin: 0;
+  padding: 0;
   font-family: $m-font-family;
   font-weight: $m-font-weight;
   font-size: $m-font-size;
@@ -117,6 +131,8 @@ p{
 }
 
 .big{
+  margin: 0;
+  padding: 0;
   font-family: $b-font-family;
   font-weight: $b-font-weight;
   font-size: $b-font-size;
@@ -126,3 +142,19 @@ p{
     font-size: $b-font-size-pc;
   }
 }
+
+.navText{
+  margin: 0;
+  padding: 0;
+  font-family: $nav-font-family;
+  font-weight: $nav-font-weight;
+  font-size: $nav-font-size;
+  color: $nav-color;
+  text-transform: uppercase;
+  
+  @include bp("laptop") {
+    font-size: $nav-font-size-pc;
+    color: $nav-color-pc;
+  }
+}
+

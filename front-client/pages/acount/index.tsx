@@ -8,7 +8,7 @@ export default function Acount() {
 
   useEffect(() => {
     if (!user) {
-      router.push("/login");
+      router.push("/connexion");
     }
   }, [user]);
 

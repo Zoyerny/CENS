@@ -5,11 +5,11 @@ import { AuthService } from 'src/auth/auth.service';
 
 export const handleUpdateConnected = async (client: Socket, data: any, sendSocketGateway: SendSocketGateway, authService: AuthService) => {
     // Récupérer la liste des utilisateurs connectés
-    const connectedUsers = await authService.getUsers();
+    //const connectedUsers = await authService.getUsers();
 
 
     // Envoyer la liste des utilisateurs connectés au client
-    sendSocketGateway.sendToAll(ServerToClientId.CONNECTED_USERS_LIST, connectedUsers);
+    //sendSocketGateway.sendToAll(ServerToClientId.CONNECTED_USERS_LIST, connectedUsers);
 };
 
 // ... ajout des fonctions pour les autres types de messages

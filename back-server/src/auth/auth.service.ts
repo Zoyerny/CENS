@@ -1,7 +1,6 @@
 import {
   ForbiddenException,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -10,8 +9,6 @@ import { SignUpInput } from './dto/signup-input';
 import { UpdateAuthInput } from './dto/update-auth.input';
 import * as argon from 'argon2';
 import { SignInInput } from './dto/signin-input';
-import { User } from '../user/user.entity';
-import { ID } from '@nestjs/graphql';
 
 @Injectable()
 export class AuthService {
@@ -27,8 +24,11 @@ export class AuthService {
     const user = await this.prisma.user.create({
       data: {
         username: signUpInput.username,
-        hashedPassword,
+        name: signUpInput.name,
         email: signUpInput.email,
+        phone: signUpInput.phone,
+        hashedPassword,
+        newsLetter: signUpInput.newsLetter,
       },
     });
 
@@ -128,36 +128,7 @@ export class AuthService {
       data: { hashedRefreshToken: null },
     });
 
-    try {
-      const existingOnlineUser = await this.prisma.onlineUser.findUnique({
-        where: { userId },
-      });
-
-      if (existingOnlineUser) {
-        await this.prisma.onlineUser.delete({
-          where: {
-            userId: userId,
-          },
-        });
-      }
-    } catch (error) {
-
-    }
-
     return { loggedOut: true };
-  }
-
-  async getUserIdBySocketId(socketId: string): Promise<string> {
-    const onlineUser = await this.prisma.onlineUser.findUnique({
-      where: {
-        socketId: socketId,
-      },
-      select: {
-        userId: true,
-      },
-    });
-
-    return onlineUser?.userId;
   }
 
   async getRefreshTokens(userId: string) {
@@ -181,49 +152,13 @@ export class AuthService {
 
   }
 
-  async setOnlineStatus(userId: string, isOnline: boolean) {
-    if (isOnline) {
-      // Vérifier si l'utilisateur en ligne existe déjà
-      const existingOnlineUser = await this.prisma.onlineUser.findUnique({
-        where: { userId },
-      });
 
-      // Si l'utilisateur en ligne n'existe pas, créez une nouvelle entrée
-      if (!existingOnlineUser) {
-        await this.prisma.onlineUser.create({
-          data: { userId, },
-        });
-      }
-    } else {
-      // Si l'utilisateur n'est pas en ligne, supprimez l'entrée correspondante
-      await this.prisma.onlineUser.delete({
-        where: { userId },
-      });
-    }
-  }
-
-  async setSocket(userId: string, socketId: string) {
-    const existingOnlineUser = await this.prisma.onlineUser.findUnique({
-      where: { userId },
-    });
-    if (existingOnlineUser) {
-      await this.prisma.onlineUser.update({
-        where: {
-          userId: userId,
-        },
-        data: {
-          socketId: socketId,
-        },
-      });
-    }
-  }
-
-  async getNewTokens(userId:string, rt:string){
+  async getNewTokens(userId: string, rt: string) {
     const user = await this.prisma.user.findUnique({
-      where : {id: userId},
+      where: { id: userId },
     });
 
-    if (!user){
+    if (!user) {
       throw new ForbiddenException('Access Denied');
     }
 
@@ -231,69 +166,17 @@ export class AuthService {
       user.hashedRefreshToken,
       rt,
     );
-    if (!doRefreshTokensMatch){
-      throw new ForbiddenException ('access Denied');
+    if (!doRefreshTokensMatch) {
+      throw new ForbiddenException('access Denied');
     }
 
-    const {accessToken, refreshToken} = await this.createTokens(
+    const { accessToken, refreshToken } = await this.createTokens(
       user.id,
       user.email,
     );
 
     await this.updateRefreshToken(user.id, refreshToken);
-    return {accessToken, refreshToken, user};
-  }
-
-
-
-  async getUsers() {
-
-    const onlineUsersGet = await this.prisma.user.findMany({
-      where: {
-        onlineUser: {
-          isNot: null,
-        },
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        onlineUser: {
-          select: {
-            createdAt: true,
-            socketId: true,
-          },
-        },
-      },
-    });
-
-    const offlineUsersGet = await this.prisma.user.findMany({
-      where: {
-        onlineUser: null,
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        onlineUser: true
-      }
-    });
-
-    const onlineUsers = onlineUsersGet.map((user) => ({
-      id: user.id,
-      socketId: user.onlineUser.socketId,
-      username: user.username,
-      email: user.email,
-      connectedAt: user.onlineUser.createdAt,
-    }));
-
-    const offlineUsers = offlineUsersGet.map((user) => ({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-    }));
-
-    return { onlineUsers: onlineUsers, offlineUsers: offlineUsers };
+    return { accessToken, refreshToken, user };
   }
 
 }

@@ -5,7 +5,7 @@ import { useAuth } from "@/utils/contexts/auth-context";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-export default function Login() {
+export default function Connexion() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, setUser } = useAuth();
@@ -41,36 +41,39 @@ export default function Login() {
   };
 
   return (
-    <form
-      id="login"
-      autoComplete="off"
-      onSubmit={(event) => handleLogin(event)}
-    >
-      <label htmlFor="email">Email</label>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        autoFocus
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      {error && (
-        <div style={{ color: "red" }}>
-          {error.graphQLErrors.map(({ message }, i) => (
-            <span key={i}>{message}</span>
-          ))}
-        </div>
-      )}
-      <button type="submit">
-        <Image src="/svg/Send.svg" width={26.13} height={24} alt="Send" />
-      </button>
-    </form>
+    <div id="login">
+      <form
+        id="loginForm"
+        autoComplete="off"
+        onSubmit={(event) => handleLogin(event)}
+      >
+        <h1>Se connecter</h1>
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          autoFocus
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {error && (
+          <div style={{ color: "red" }}>
+            {error.graphQLErrors.map(({ message }, i) => (
+              <span key={i}>{message}</span>
+            ))}
+          </div>
+        )}
+        <button type="submit">
+          <Image src="/svg/Send.svg" width={26.13} height={24} alt="Send" />
+        </button>
+      </form>
+    </div>
   );
 }

@@ -1,30 +1,52 @@
-import { useEffect, useState } from "react";
-import { useHandler } from "@/utils/contexts/handler-context";
 import Link from "next/link";
 import Image from "next/image";
-import NavSettings from "./NavSettings";
-import { useAuth } from "@/utils/contexts/auth-context";
+import NavAcountPc from "./NavAcountPc";
+import { useRouter } from "next/router";
 
 export interface User {
   id: string;
   username: string;
 }
 
-export default function NavDesktop({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { onlineUsers, offlineUsers } = useHandler();
-  const { user } = useAuth();
-
-  if (!user) {
-    return <div>Aucun Utilisateur connecté...</div>;
-  }
+export default function NavDesktop() {
+  const router = useRouter();
 
   return (
     <div id="NavDesktop">
-      
+      <Link className="logo" href={"/"}>
+        <Image src="/logo.png" width={75} height={75} alt="Logo" />
+      </Link>
+      <ul className="linkPc">
+        <li>
+          <Link
+            className={`navText ${router.pathname === "/" ? "active" : ""}`}
+            href={"/"}
+          >
+            Acceuil
+          </Link>
+        </li>
+        <li>
+          <Link
+            className={`navText ${
+              router.pathname === "/search" ? "active" : ""
+            }`}
+            href={"/search"}
+          >
+            Search
+          </Link>
+        </li>
+        <li>
+          <Link
+            className={`navText ${
+              router.pathname === "/articles" ? "active" : ""
+            }`}
+            href={"/articles"}
+          >
+            Articles
+          </Link>
+        </li>
+      </ul>
+      <NavAcountPc />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import NavDesktop from "./nav/NavDesktop";
-import NavSettings from "./nav/NavSettings";
 import NavMobile from "./nav/NavMobile";
 
 export default function Nav() {
@@ -8,7 +7,7 @@ export default function Nav() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(document.documentElement.clientWidth < 768);
+      setIsMobile(document.documentElement.clientWidth < 992);
     };
 
     handleResize();
@@ -25,13 +24,9 @@ export default function Nav() {
           <NavMobile />
         </nav>
       ) : (
-        <>
-          <nav>
-            <NavDesktop>
-              <NavSettings />
-            </NavDesktop>
-          </nav>
-        </>
+        <nav>
+          <NavDesktop />
+        </nav>
       )}
     </>
   );

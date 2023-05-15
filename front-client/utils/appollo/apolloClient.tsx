@@ -4,14 +4,14 @@ import { parseCookies } from "nookies";
 
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_API_URL,
-  credentials: 'include',
+  credentials: "include",
 });
 
 const authLink = setContext((_, { headers }) => {
   // Récupérez les cookies depuis le côté serveur
   const cookies = parseCookies();
 
-  const token = cookies.accessToken;
+  const token = cookies.cookieAccessToken;
 
   if (!token) {
     return { headers };

@@ -1,0 +1,143 @@
+@use "../../abstracts" as *;
+
+footer {
+    
+  position: relative;
+  background: $color-variants;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+  #newsLetter {
+    width: 100%;
+    height: 40%;
+    background: $color-Secondary;
+    padding: 20px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+
+    @include bp("laptop") {
+      flex-direction: row;
+      gap: 0px;
+      justify-content: space-between;
+    }
+    @include bp("computer") {
+      justify-content: space-evenly;
+      padding-right: 130px;
+      padding-left: 130px;
+    }
+
+    .newsLetterText {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      text-align: center;
+    }
+
+    form {
+      input {
+        text-align: center;
+      }
+    }
+  }
+
+  #rights {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: $color-variants;
+    @include bp("laptop") {
+      flex-direction: row;
+      gap: 0px;
+      justify-content: space-between;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+    @include bp("computer") {
+      justify-content: space-between;
+      padding-right: 130px;
+      padding-left: 130px;
+    }
+
+    .pages {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      text-align: center;
+      gap: 50px;
+      width: 100%;
+      padding: 50px 20px 50px 20px;
+
+      @include bp("laptop") {
+        width: 40%;
+        justify-content: space-between;
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: auto;
+        gap: 10px;
+
+        a,
+        p {
+          color: #ffffff;
+        }
+
+        p {
+          margin-bottom: 10px;
+        }
+
+        a {
+          font-weight: 500;
+        }
+      }
+    }
+
+    .sepH {
+      @include bp("laptop") {
+        width: 4px;
+        height: 300px;
+      }
+    }
+    .reseaux {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      gap: 50px;
+      padding: 50px 20px 50px 20px;
+
+      @include bp("laptop") {
+        width: 40%;
+        justify-content: center;
+      }
+
+      h2 {
+        color: #ffffff;
+      }
+
+      .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+      }
+    }
+
+    .Copyright {
+      position: absolute;
+      top: -100px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+  }
+}

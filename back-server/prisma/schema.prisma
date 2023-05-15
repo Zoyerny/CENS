@@ -10,63 +10,67 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
-  id                 String          @id @default(uuid())
+  id                 String    @id @default(uuid())
+  role               Role      @default(USER)
   username           String
-  email              String          @unique
+  name               String
+  email              String    @unique
+  phone              String?   
   hashedPassword     String
   hashedRefreshToken String?
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @default(now())
-  projects           ProjectUser[]
-  sentMessages       Message[]       @relation("MessageSender")
-  receivedMessages   DirectMessage[] @relation("DirectMessageRecipient")
-  sentDirectMessages DirectMessage[] @relation("DirectMessageSender")
-  onlineUser         OnlineUser?
+  newsLetter         Boolean
+  sentMessages       Message[] @relation("sentMessages")
+  receivedMessages   Message[] @relation("receivedMessages")
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now())
 }
 
-model OnlineUser {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  socketId  String?  @unique
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+enum ProductsType {
+  FORMATION
+  EVENT
+  PRATICIEN
 }
 
-model Project {
-  id          String        @id @default(uuid())
+model Products {
+  id          String       @id @default(uuid())
   name        String
-  description String?
-  users       ProjectUser[]
-  messages    Message[]
+  type        ProductsType
+  image       String
+  description String
+  price       Float
+  location    String
+  other       String[]
+  tag         String[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
 }
 
-model ProjectUser {
-  userId    String
-  user      User    @relation(fields: [userId], references: [id])
-  projectId String
-  project   Project @relation(fields: [projectId], references: [id])
-
-  @@id([userId, projectId])
+model Articles {
+  id          String   @id @default(uuid())
+  name        String
+  image       String
+  description String
+  content     String
+  tag         String[]
+  like        Int
+  dislike     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
 
 model Message {
-  id        String   @id @default(uuid())
-  content   String
-  createdAt DateTime @default(now())
-  senderId  String
-  sender    User     @relation(name: "MessageSender", fields: [senderId], references: [id])
-  projectId String
-  project   Project  @relation(fields: [projectId], references: [id])
-}
-
-model DirectMessage {
-  id          String   @id @default(uuid())
-  content     String
-  createdAt   DateTime @default(now())
-  senderId    String
-  sender      User     @relation(name: "DirectMessageSender", fields: [senderId], references: [id])
-  recipientId String
-  recipient   User     @relation(name: "DirectMessageRecipient", fields: [recipientId], references: [id])
+  id         String   @id @default(uuid())
+  text       String
+  sender     User     @relation(name: "sentMessages", fields: [senderId], references: [id])
+  receiver   User     @relation(name: "receivedMessages", fields: [receiverId], references: [id])
+  senderId   String
+  receiverId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
 }

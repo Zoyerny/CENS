@@ -1,0 +1,184 @@
+@use "../abstracts" as *;
+
+#__next {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 100px 1fr 0.3fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px; 
+}
+
+nav {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+main {
+  min-height: 100vh;
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+footer {
+  grid-area: 3 / 1 / 4 / 2;
+}
+
+.searchBack {
+  position: relative;
+  top: -50px;
+  background: $color-Primary;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 10px 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 30px;
+
+  margin-left: 20px;
+  margin-right: 20px;
+
+  width: calc(100% - 40px);
+
+  padding: 0 5px 5px 5px;
+
+  @include bp("tablette") {
+    top: -100px;
+  }
+  @include bp("laptop") {
+    padding: 0 30px 5px 30px;
+  }
+  @include bp("computer") {
+    width: calc(100% - 260px);
+    margin-right: 130px;
+    margin-left: 130px;
+  }
+  .search {
+    min-height: 100px;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.8) 100%
+      ),
+      url("/images/Slider1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    min-height: 200px;
+    border-radius: 0px 0px 10px 10px;
+    padding: 30px 0 30px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include bp("tablette") {
+      min-height: 250px;
+    }
+
+    @include bp("laptop") {
+      min-height: 250px;
+    }
+
+    form {
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+
+      @include bp("tablette") {
+        flex-direction: row;
+      }
+      *:focus {
+        outline: none;
+      }
+      label {
+      }
+
+      .searchBar {
+        background: url("/images/form/search.png");
+      }
+
+      .localisationBar {
+        background: url("/images/form/localisation.png");
+      }
+
+      input::placeholder {
+        font-family: "Montserrat";
+        font-weight: 700;
+        font-size: 1rem;
+        text-transform: uppercase;
+
+        color: #6a6968;
+      }
+
+      input {
+        width: 300px;
+        height: 45px;
+        padding-left: 15px;
+
+        border: none;
+        background: #ffffff;
+        border-bottom: 1px solid #101010;
+        border-radius: 0px 0px 10px 10px;
+        caret-color: $color-main;
+
+        font-family: "Montserrat";
+        font-weight: 700;
+        font-size: 1.4rem;
+
+        color: #101010;
+      }
+
+      button {
+        width: 165px;
+        height: 45px;
+        background: #ffffff;
+        background: url("/images/form/submit.png");
+        border: none;
+        border-bottom: 1px solid #101010;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 0px 0px 10px 10px;
+        padding-left: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+    }
+  }
+}
+
+.clearButton {
+  width: 125px;
+  height: 45px;
+  border-width: 4px 4px 4px 0px;
+  border-style: solid;
+  border-color: #c9c0b6;
+  border-radius: 0px 5px 5px 0px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: $h3-font-family;
+  font-weight: $h3-font-weight;
+  font-size: $h3-font-size;
+  color: $h3-color;
+}
+
+.sepH {
+  width: 300px;
+  height: 4px;
+  background: #c9c0b6;
+}
+
+.sepV {
+  width: 4px;
+  height: 300px;
+  background: #c9c0b6;
+}

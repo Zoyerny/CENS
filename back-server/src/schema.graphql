@@ -42,19 +42,28 @@ type SignReponse {
 
 input SignUpInput {
   email: String!
+  name: String!
+  newsLetter: Boolean!
   password: String!
+  phone: String!
   username: String!
 }
 
 input UpdateAuthInput {
   email: String
   id: String!
+  name: String
+  newsLetter: Boolean
   password: String
+  phone: String
   username: String
 }
 
 type User {
   email: String!
   id: ID!
+  name: String!
+  phone: String!
+  role: String!
   username: String!
 }

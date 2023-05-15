@@ -1,14 +1,16 @@
+
 import gql from "graphql-tag";
 
-export const LOGIN_MUTATION = gql`
-  mutation LoginMutation($input: SignInInput!) {
-    signin(signInInput: $input) {
+export const REGISTER_MUTATION = gql`
+mutation signUpUser($input: SignUpInput!) {
+    signup(signUpInput: $input) {
       accessToken
       refreshToken
       user {
         id
         role
         username
+        name
         email
         phone
       }

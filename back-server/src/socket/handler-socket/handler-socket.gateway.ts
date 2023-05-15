@@ -31,21 +31,11 @@ export class HandlerSocketGateway implements OnGatewayConnection, OnGatewayDisco
 
   @UseGuards(AccessTokenGuard)
   async handleConnection(client: Socket) {
-    let userId = client.handshake.query.userId;
-    if (Array.isArray(userId)) {
-      userId = userId[0];
-    }
-    console.log(`clientId : ${userId}, socketId : ${client.id}`)
-    this.authService.setOnlineStatus(userId, true);
-    this.authService.setSocket(userId, client.id);
-    const connectedUsers = await this.authService.getUsers();
-    this.sendSocketGateway.sendToAll(ServerToClientId.CONNECTED_USERS_LIST, connectedUsers);
+    console.log(` Client connected : ${client.id}`)
   }
 
   async handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
-    const connectedUsers = await this.authService.getUsers();
-    this.sendSocketGateway.sendToAll(ServerToClientId.CONNECTED_USERS_LIST, connectedUsers);
   }
 
   @SubscribeMessage('messageToServer')

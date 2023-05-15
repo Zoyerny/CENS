@@ -12,7 +12,6 @@ import { CurrentUserId } from './decorators/currentUserId.decorator';
 import { CurrentUser } from './decorators/currentUser.decorator';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
 import { UseGuards } from '@nestjs/common';
-import { User } from '../user/user.entity';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -49,6 +48,7 @@ export class AuthResolver {
   }
 
   // Mutation pour déconnecter un utilisateur
+  @Public()
   @Mutation(() => LogoutReponse)
   logout(@Args('id', { type: () => String }) id: string) {
     // Call the AuthService to logout a user

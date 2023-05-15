@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { useState } from "react";
-import NavSettings from "./NavSettings";
+import NavAcountMobile from "./NavAcountMobile";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function NavMobile() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -18,17 +20,17 @@ export default function NavMobile() {
         <button id="ButtonMobile" onClick={handleToggle}>
           {isOpen ? (
             <Image
-              src="/svg/OpenNav.svg"
-              width={38}
-              height={25}
-              alt="Open Nav"
+              src="/svg/CloseNav.svg"
+              width={50}
+              height={50}
+              alt="Close Nav"
             />
           ) : (
             <Image
-              src="/svg/CloseNav.svg"
-              width={38}
-              height={25}
-              alt="Close Nav"
+              src="/svg/OpenNav.svg"
+              width={50}
+              height={50}
+              alt="Open Nav"
             />
           )}
         </button>
@@ -36,11 +38,40 @@ export default function NavMobile() {
 
       {isOpen && (
         <div id="navModal">
-          <div className="modal-content">
-            <h3>Acceuil</h3>
-            <h3>Search</h3>
-            <h3>Article</h3>
-          </div>
+          <ul className="link">
+            <li>
+              <Link
+                className={`navText ${router.pathname === "/" ? "active" : ""}`}
+                href={"/"}
+                onClick={() => setIsOpen(false)}
+              >
+                Acceuil
+              </Link>
+            </li>
+            <li>
+              <Link
+                className={`navText ${
+                  router.pathname === "/search" ? "active" : ""
+                }`}
+                href={"/search"}
+                onClick={() => setIsOpen(false)}
+              >
+                Search
+              </Link>
+            </li>
+            <li>
+              <Link
+                className={`navText ${
+                  router.pathname === "/articles" ? "active" : ""
+                }`}
+                href={"/articles"}
+                onClick={() => setIsOpen(false)}
+              >
+                Articles
+              </Link>
+            </li>
+          </ul>
+          <NavAcountMobile setIsOpen={setIsOpen} />
         </div>
       )}
     </>
