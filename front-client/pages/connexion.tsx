@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 export default function Connexion() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, setUser,setAccessToken,setRefreshToken } = useAuth();
+  const { user, setUser, setAccessToken, setRefreshToken } = useAuth();
 
   const router = useRouter();
 
@@ -32,7 +32,7 @@ export default function Connexion() {
     })
       .then((result) => {
         if (result.data) {
-          console.log("Connexion :",result)
+          console.log("Connexion :", result);
           setUser(result.data.signin.user);
           setAccessToken(result.data.signin.accessToken);
           setRefreshToken(result.data.signin.refreshToken);
@@ -73,9 +73,7 @@ export default function Connexion() {
             ))}
           </div>
         )}
-        <button type="submit">
-          <Image src="/svg/Send.svg" width={26.13} height={24} alt="Send" />
-        </button>
+        <button type="submit">Send</button>
       </form>
     </div>
   );

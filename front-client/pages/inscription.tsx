@@ -163,9 +163,7 @@ export default function Inscription() {
             ))}
           </div>
         )}
-        <button type="submit">
-          <Image src="/svg/Send.svg" width={26.13} height={24} alt="Send" />
-        </button>
+        <button type="submit">Send</button>
       </form>
       <div className="rejoindre">
         <h1>Pourquoi nous rejoindre</h1>
