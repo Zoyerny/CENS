@@ -4,7 +4,8 @@ import { setCookie, parseCookies, destroyCookie } from "nookies";
 export enum Role {
   USER = 'USER',
   FORMATION = 'FORMATION',
-  ADMIN = 'ADMIN'
+  PRATICIEN = 'PRATICIEN',
+  ADMIN = 'ADMIN',
 };
 
 export interface UserType {
@@ -53,10 +54,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
   const { cookieAccessToken, cookieRefreshToken, cookieUser } = parseCookies();
-
-  useEffect(() => {
-    console.log(user)
-  }, [user]);
 
   useEffect(() => {
     if (cookieAccessToken) {

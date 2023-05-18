@@ -8,8 +8,6 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/accessToken.guard';
-import { HandlerSocketGateway } from './socket/handler-socket/handler-socket.gateway';
-import { SendSocketGateway } from './socket/send-socket/send-socket.gateway';
 import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 
@@ -39,7 +37,7 @@ import { JwtService } from '@nestjs/jwt';
   controllers: [],
   providers: [
     PrismaService,
-    { provide: APP_GUARD, useClass: AccessTokenGuard }, HandlerSocketGateway, SendSocketGateway, AuthService, JwtService,
+    { provide: APP_GUARD, useClass: AccessTokenGuard }, AuthService, JwtService,
   ],
 })
 export class AppModule { }

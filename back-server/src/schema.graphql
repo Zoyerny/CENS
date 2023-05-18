@@ -2,9 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AdminInput {
+  bool: Boolean!
+  id: String!
+}
+
 type Auth {
   """Example field (placeholder)"""
   exampleField: Int!
+}
+
+type ChangeResponse {
+  changed: Boolean!
 }
 
 type GetUsersResponse {
@@ -16,12 +25,16 @@ type LogoutReponse {
 }
 
 type Mutation {
+  deleteUser(id: String!): ChangeResponse!
   getNewTokens: NewTokenReponse!
   logout(id: String!): LogoutReponse!
   signin(signInInput: SignInInput!): SignReponse!
   signup(signUpInput: SignUpInput!): SignReponse!
   updateAuth(updateInput: UpdateInput!): SignReponse!
   updatePassword(updatePasswordInput: UpdatePasswordInput!): UpdatePasswordReponse!
+  updateUserAdmin(adminInput: AdminInput!): ChangeResponse!
+  updateUserPraticien(adminInput: AdminInput!): ChangeResponse!
+  updateUserScribe(adminInput: AdminInput!): ChangeResponse!
 }
 
 type NewTokenReponse {

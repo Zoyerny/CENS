@@ -1,10 +1,10 @@
 import { LOGOUT_MUTATION } from "@/graphql/logout.mutation";
 import { useAuth } from "@/utils/contexts/auth-context";
-import { useSocket } from "@/utils/contexts/socket-context";
 import { useMutation } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { destroyCookie } from "nookies";
 import { useEffect, useState } from "react";
 
 export default function ConnexionMobile() {
@@ -12,7 +12,6 @@ export default function ConnexionMobile() {
   const [isOpen, setIsOpen] = useState(false);
   const [logoutMutation] = useMutation(LOGOUT_MUTATION);
 
-  const { disconnected } = useSocket();
 
   const router = useRouter();
 
@@ -29,8 +28,11 @@ export default function ConnexionMobile() {
           setUser(null);
           setAccessToken(null);
           setRefreshToken(null);
-          disconnected();
+          destroyCookie(undefined, "cookieUser");
+          destroyCookie(undefined, "cookieAccessToken");
+          destroyCookie(undefined, "cookieRefreshToken");
           setIsOpen(false);
+          router.push("/");
         }
       })
       .catch((error) => {

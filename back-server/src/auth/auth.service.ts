@@ -10,6 +10,8 @@ import * as argon from 'argon2';
 import { SignInInput } from './dto/signin-input';
 import { UpdateInput } from './dto/update-input';
 import { UpdatePasswordInput } from './dto/update-password-input';
+import { AdminInput } from './dto/admin-input';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -243,6 +245,49 @@ export class AuthService {
       },
     });
     return { users };
+  }
+
+  async updateUserPraticien(adminInput: AdminInput) {
+    await this.prisma.user.updateMany({
+      where: {
+        id: adminInput.id,
+      },
+      data: { role: adminInput.bool ? Role.PRATICIEN : Role.USER },
+    });
+
+    return { changed: true }
+  }
+
+  async updateUserAdmin(adminInput: AdminInput) {
+    await this.prisma.user.updateMany({
+      where: {
+        id: adminInput.id,
+      },
+      data: { role: adminInput.bool ? Role.ADMIN : Role.USER },
+    });
+
+    return { changed: true }
+  }
+
+  async updateUserScribe(adminInput: AdminInput) {
+    await this.prisma.user.updateMany({
+      where: {
+        id: adminInput.id,
+      },
+      data: { scribe: adminInput.bool },
+    });
+
+    return { changed: true }
+  }
+
+  async deleteUser(userId: string) {
+    await this.prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    })
+
+    return { changed: true }
   }
 
 }

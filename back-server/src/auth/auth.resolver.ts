@@ -14,8 +14,9 @@ import { UseGuards } from '@nestjs/common';
 import { UpdateInput } from './dto/update-input';
 import { UpdatePasswordInput } from './dto/update-password-input';
 import { UpdatePasswordReponse } from './dto/update-password-response';
-import { User } from 'src/user/user.entity';
 import { GetUsersResponse } from './dto/getUsers-response';
+import { ChangeResponse } from './dto/change-response';
+import { AdminInput } from './dto/admin-input';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -71,10 +72,31 @@ export class AuthResolver {
     return 'Hello world !';
   }
 
-  @Public()
   @Query(() => GetUsersResponse)
   getUsers() {
     return this.authService.getAllUsers();
+  }
+
+  @Mutation(() => ChangeResponse)
+  updateUserPraticien(@Args('adminInput') adminInput: AdminInput) {
+    // Appelle le service AuthService pour mettre à jour les informations d'un utilisateur
+    return this.authService.updateUserPraticien(adminInput);
+  }
+
+  @Mutation(() => ChangeResponse)
+  updateUserAdmin(@Args('adminInput') adminInput: AdminInput) {
+    // Appelle le service AuthService pour mettre à jour les informations d'un utilisateur
+    return this.authService.updateUserAdmin(adminInput);
+  }
+  @Mutation(() => ChangeResponse)
+  updateUserScribe(@Args('adminInput') adminInput: AdminInput) {
+    // Appelle le service AuthService pour mettre à jour les informations d'un utilisateur
+    return this.authService.updateUserScribe(adminInput);
+  }
+  @Mutation(() => ChangeResponse)
+  deleteUser(@Args('id', { type: () => String }) id: string) {
+    // Appelle le service AuthService pour mettre à jour les informations d'un utilisateur
+    return this.authService.deleteUser(id);
   }
 
   @Public()

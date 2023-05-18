@@ -12,10 +12,25 @@ export type Scalars = {
   Float: number;
 };
 
+export type AdminInput = {
+  bool: Scalars['Boolean'];
+  id: Scalars['String'];
+};
+
 export type Auth = {
   __typename?: 'Auth';
   /** Example field (placeholder) */
   exampleField: Scalars['Int'];
+};
+
+export type ChangeResponse = {
+  __typename?: 'ChangeResponse';
+  changed: Scalars['Boolean'];
+};
+
+export type GetUsersResponse = {
+  __typename?: 'GetUsersResponse';
+  users: Array<User>;
 };
 
 export type LogoutReponse = {
@@ -25,12 +40,21 @@ export type LogoutReponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  deleteUser: ChangeResponse;
   getNewTokens: NewTokenReponse;
   logout: LogoutReponse;
   signin: SignReponse;
   signup: SignReponse;
   updateAuth: SignReponse;
   updatePassword: UpdatePasswordReponse;
+  updateUserAdmin: ChangeResponse;
+  updateUserPraticien: ChangeResponse;
+  updateUserScribe: ChangeResponse;
+};
+
+
+export type MutationDeleteUserArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -58,6 +82,21 @@ export type MutationUpdatePasswordArgs = {
   updatePasswordInput: UpdatePasswordInput;
 };
 
+
+export type MutationUpdateUserAdminArgs = {
+  signInInput: AdminInput;
+};
+
+
+export type MutationUpdateUserPraticienArgs = {
+  signInInput: AdminInput;
+};
+
+
+export type MutationUpdateUserScribeArgs = {
+  signInInput: AdminInput;
+};
+
 export type NewTokenReponse = {
   __typename?: 'NewTokenReponse';
   accessToken: Scalars['String'];
@@ -67,7 +106,7 @@ export type NewTokenReponse = {
 export type Query = {
   __typename?: 'Query';
   auth: Auth;
-  getUsers: User;
+  getUsers: GetUsersResponse;
   hello: Scalars['String'];
 };
 
@@ -126,10 +165,10 @@ export type User = {
   username: Scalars['String'];
 };
 
-export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetUsersQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', getUsers: { __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean } };
+export type GetUsersQueryQuery = { __typename?: 'Query', getUsers: { __typename?: 'GetUsersResponse', users: Array<{ __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean }> } };
 
 export type LoginMutationMutationVariables = Exact<{
   input: SignInInput;
