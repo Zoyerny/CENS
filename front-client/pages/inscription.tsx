@@ -7,14 +7,14 @@ import { useRouter } from "next/router";
 
 export default function Inscription() {
   const [username, setUsername] = useState("");
-  const [name, setName] = useState("");
+  const [lastName, setlastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [newsLetter, setnewsLetter] = useState(true);
   const [errorPassword, seterrorPassword] = useState(false);
-  const { user, setUser } = useAuth();
+  const { user, setUser, setAccessToken, setRefreshToken } = useAuth();
 
   const router = useRouter();
 
@@ -40,7 +40,7 @@ export default function Inscription() {
       variables: {
         input: {
           username,
-          name,
+          lastName,
           email,
           phone,
           password,
@@ -50,8 +50,9 @@ export default function Inscription() {
     })
       .then((result) => {
         if (result.data) {
-          console.log(result.data);
           setUser(result.data.signup.user);
+          setAccessToken(result.data.signup.accessToken);
+          setRefreshToken(result.data.signup.refreshToken);
         }
       })
       .catch((error) => {
@@ -88,7 +89,7 @@ export default function Inscription() {
               name="lastname"
               id="lastname"
               required
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setlastName(e.target.value)}
             />
           </div>
           <div className="content">

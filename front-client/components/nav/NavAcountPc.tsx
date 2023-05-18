@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function ConnexionMobile() {
-  const { user, setUser } = useAuth();
+  const { user, setUser, setAccessToken, setRefreshToken } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [logoutMutation] = useMutation(LOGOUT_MUTATION);
 
@@ -27,6 +27,8 @@ export default function ConnexionMobile() {
         if (result.data) {
           console.log("logged out :", result.data.logout.loggedOut);
           setUser(null);
+          setAccessToken(null);
+          setRefreshToken(null);
           disconnected();
           setIsOpen(false);
         }

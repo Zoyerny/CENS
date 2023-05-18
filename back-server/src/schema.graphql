@@ -7,6 +7,10 @@ type Auth {
   exampleField: Int!
 }
 
+type GetUsersResponse {
+  users: [User!]!
+}
+
 type LogoutReponse {
   loggedOut: Boolean!
 }
@@ -16,7 +20,8 @@ type Mutation {
   logout(id: String!): LogoutReponse!
   signin(signInInput: SignInInput!): SignReponse!
   signup(signUpInput: SignUpInput!): SignReponse!
-  updateAuth(updateAuthInput: UpdateAuthInput!): Auth!
+  updateAuth(updateInput: UpdateInput!): SignReponse!
+  updatePassword(updatePasswordInput: UpdatePasswordInput!): UpdatePasswordReponse!
 }
 
 type NewTokenReponse {
@@ -26,6 +31,7 @@ type NewTokenReponse {
 
 type Query {
   auth(id: String!): Auth!
+  getUsers: GetUsersResponse!
   hello: String!
 }
 
@@ -42,28 +48,36 @@ type SignReponse {
 
 input SignUpInput {
   email: String!
-  name: String!
+  lastName: String!
   newsLetter: Boolean!
   password: String!
   phone: String!
   username: String!
 }
 
-input UpdateAuthInput {
-  email: String
-  id: String!
-  name: String
-  newsLetter: Boolean
-  password: String
-  phone: String
-  username: String
+input UpdateInput {
+  email: String!
+  lastName: String!
+  newsLetter: Boolean!
+  phone: String!
+  username: String!
+}
+
+input UpdatePasswordInput {
+  password: String!
+}
+
+type UpdatePasswordReponse {
+  changed: Boolean!
 }
 
 type User {
   email: String!
   id: ID!
-  name: String!
+  lastName: String!
+  newsLetter: Boolean!
   phone: String!
   role: String!
+  scribe: Boolean!
   username: String!
 }

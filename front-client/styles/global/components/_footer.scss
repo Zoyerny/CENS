@@ -2,9 +2,7 @@
 
 footer {
     
-  position: relative;
   background: $color-variants;
-  min-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -132,12 +130,12 @@ footer {
         gap: 50px;
       }
     }
+  }
 
-    .Copyright {
-      position: absolute;
-      top: -100px;
-      font-weight: 600;
-      color: #ffffff;
-    }
+  .Copyright {
+    font-weight: 600;
+    color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }

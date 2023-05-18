@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
+CREATE TYPE "Role" AS ENUM ('USER', 'FORMATION', 'ADMIN');
 
 -- CreateEnum
 CREATE TYPE "ProductsType" AS ENUM ('FORMATION', 'EVENT', 'PRATICIEN');
@@ -9,12 +9,13 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'USER',
     "username" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "phone" TEXT,
     "hashedPassword" TEXT NOT NULL,
     "hashedRefreshToken" TEXT,
     "newsLetter" BOOLEAN NOT NULL,
+    "scribe" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

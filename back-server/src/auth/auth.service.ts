@@ -6,9 +6,10 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { SignUpInput } from './dto/signup-input';
-import { UpdateAuthInput } from './dto/update-auth.input';
 import * as argon from 'argon2';
 import { SignInInput } from './dto/signin-input';
+import { UpdateInput } from './dto/update-input';
+import { UpdatePasswordInput } from './dto/update-password-input';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +25,7 @@ export class AuthService {
     const user = await this.prisma.user.create({
       data: {
         username: signUpInput.username,
-        name: signUpInput.name,
+        lastName: signUpInput.lastName,
         email: signUpInput.email,
         phone: signUpInput.phone,
         hashedPassword,
@@ -75,8 +76,57 @@ export class AuthService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  update(id: string, updateAuthInput: UpdateAuthInput) {
-    return `This action updates a #${id} auth`;
+  async update(userId: string, updateInput: UpdateInput) {
+    let user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new ForbiddenException('User doesent exixt');
+    }
+    await this.prisma.user.updateMany({
+      where: {
+        id: userId,
+      },
+      data: {
+        username: updateInput.username,
+        lastName: updateInput.lastName,
+        email: updateInput.email,
+        phone: updateInput.phone,
+        newsLetter: updateInput.newsLetter,
+      },
+    });
+
+    user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    const { accessToken, refreshToken } = await this.createTokens(
+      user.id.toString(),
+      user.email,
+    );
+
+    await this.updateRefreshToken(user.id.toString(), refreshToken);
+    return { accessToken, refreshToken, user };
+  }
+
+  async updatePassword(userId: string, updatePasswordInput: UpdatePasswordInput) {
+    const hashedPassword = await argon.hash(updatePasswordInput.password);
+
+    await this.prisma.user.updateMany({
+      where: {
+        id: userId,
+      },
+      data: {
+        hashedPassword: hashedPassword,
+      },
+    });
+
+    return { changed: true };
   }
 
   async createTokens(userId: string, email: string) {
@@ -177,6 +227,22 @@ export class AuthService {
 
     await this.updateRefreshToken(user.id, refreshToken);
     return { accessToken, refreshToken, user };
+  }
+
+  async getAllUsers() {
+    const users = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        role: true,
+        username: true,
+        lastName: true,
+        email: true,
+        phone: true,
+        newsLetter: true,
+        scribe: true,
+      },
+    });
+    return { users };
   }
 
 }

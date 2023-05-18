@@ -9,8 +9,11 @@ export const LOGIN_MUTATION = gql`
         id
         role
         username
+        lastName
         email
         phone
+        newsLetter
+        scribe
       }
     }
   }

@@ -1,10 +1,21 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 
+export enum Role {
+  USER = 'USER',
+  FORMATION = 'FORMATION',
+  ADMIN = 'ADMIN'
+};
+
 export interface UserType {
   id: string;
+  role: Role;
   username: string;
+  lastName: string;
   email: string;
+  phone: string;
+  newsLetter: boolean;
+  scribe: boolean;
 }
 
 export interface AuthContextType {
@@ -42,6 +53,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
   const { cookieAccessToken, cookieRefreshToken, cookieUser } = parseCookies();
+
+  useEffect(() => {
+    console.log(user)
+  }, [user]);
 
   useEffect(() => {
     if (cookieAccessToken) {

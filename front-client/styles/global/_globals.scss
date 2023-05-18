@@ -21,6 +21,16 @@ footer {
   grid-area: 3 / 1 / 4 / 2;
 }
 
+.disableSelection{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: 0;
+  }
+
 .searchBack {
   position: relative;
   top: -50px;
@@ -55,6 +65,10 @@ footer {
     width: calc(100% - 260px);
     margin-right: 130px;
     margin-left: 130px;
+  }
+
+  h2{
+    margin-top: 20px;
   }
   .search {
     min-height: 100px;

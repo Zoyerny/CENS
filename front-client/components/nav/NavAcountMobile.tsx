@@ -10,7 +10,7 @@ interface NavSettingsProps {
 }
 
 export default function NavAcountMobile({ setIsOpen }: NavSettingsProps) {
-  const { user, setUser } = useAuth();
+  const { user, setUser, setAccessToken, setRefreshToken } = useAuth();
   const [logoutMutation] = useMutation(LOGOUT_MUTATION);
 
   const { disconnected } = useSocket();
@@ -28,6 +28,8 @@ export default function NavAcountMobile({ setIsOpen }: NavSettingsProps) {
         if (result.data) {
           console.log("logged out :", result.data.logout.loggedOut);
           setUser(null);
+          setAccessToken(null);
+          setRefreshToken(null);
           disconnected();
           setIsOpen(false);
         }

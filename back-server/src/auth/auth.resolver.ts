@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Auth } from './entities/auth.entity';
 import { SignUpInput } from './dto/signup-input';
-import { UpdateAuthInput } from './dto/update-auth.input';
 import { SignReponse } from './dto/sign-reponse';
 import { SignInInput } from './dto/signin-input';
 import { LogoutReponse } from './dto/logout-response';
@@ -12,6 +11,11 @@ import { CurrentUserId } from './decorators/currentUserId.decorator';
 import { CurrentUser } from './decorators/currentUser.decorator';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
 import { UseGuards } from '@nestjs/common';
+import { UpdateInput } from './dto/update-input';
+import { UpdatePasswordInput } from './dto/update-password-input';
+import { UpdatePasswordReponse } from './dto/update-password-response';
+import { User } from 'src/user/user.entity';
+import { GetUsersResponse } from './dto/getUsers-response';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -41,10 +45,16 @@ export class AuthResolver {
   }
 
   // Mutation pour mettre à jour les informations d'un utilisateur
-  @Mutation(() => Auth)
-  updateAuth(@Args('updateAuthInput') updateAuthInput: UpdateAuthInput) {
+  @Mutation(() => SignReponse)
+  updateAuth(@CurrentUserId() userId: string, @Args('updateInput') updateInput: UpdateInput) {
     // Appelle le service AuthService pour mettre à jour les informations d'un utilisateur
-    return this.authService.update(updateAuthInput.id, updateAuthInput);
+    return this.authService.update(userId,updateInput);
+  }
+
+  @Mutation(() => UpdatePasswordReponse)
+  updatePassword(@CurrentUserId() userId: string, @Args('updatePasswordInput') updatePasswordInput: UpdatePasswordInput) {
+    // Appelle le service AuthService pour mettre à jour les informations d'un utilisateur
+    return this.authService.updatePassword(userId,updatePasswordInput);
   }
 
   // Mutation pour déconnecter un utilisateur
@@ -62,11 +72,17 @@ export class AuthResolver {
   }
 
   @Public()
+  @Query(() => GetUsersResponse)
+  getUsers() {
+    return this.authService.getAllUsers();
+  }
+
+  @Public()
   @UseGuards(RefreshTokenGuard)
   @Mutation(() => NewTokenReponse)
   getNewTokens(
     @CurrentUserId() userId: string,
-    @CurrentUser('refreshToken') refreshToken : string,
+    @CurrentUser('refreshToken') refreshToken: string,
   ) {
     return this.authService.getNewTokens(userId, refreshToken);
   }

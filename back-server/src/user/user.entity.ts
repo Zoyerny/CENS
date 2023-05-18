@@ -13,11 +13,17 @@ export class User {
   username: string;
 
   @Field()
-  name: string;
+  lastName: string;
 
   @Field()
   email: string;
 
   @Field()
   phone: string;
+
+  @Field()
+  newsLetter: boolean
+
+  @Field()
+  scribe: boolean;
 }

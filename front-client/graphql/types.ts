@@ -29,12 +29,8 @@ export type Mutation = {
   logout: LogoutReponse;
   signin: SignReponse;
   signup: SignReponse;
-  updateAuth: Auth;
-};
-
-
-export type MutationGetNewTokensArgs = {
-  refreshToken: Scalars['String'];
+  updateAuth: SignReponse;
+  updatePassword: UpdatePasswordReponse;
 };
 
 
@@ -54,7 +50,12 @@ export type MutationSignupArgs = {
 
 
 export type MutationUpdateAuthArgs = {
-  updateAuthInput: UpdateAuthInput;
+  updateInput: UpdateInput;
+};
+
+
+export type MutationUpdatePasswordArgs = {
+  updatePasswordInput: UpdatePasswordInput;
 };
 
 export type NewTokenReponse = {
@@ -66,6 +67,7 @@ export type NewTokenReponse = {
 export type Query = {
   __typename?: 'Query';
   auth: Auth;
+  getUsers: User;
   hello: Scalars['String'];
 };
 
@@ -88,30 +90,53 @@ export type SignReponse = {
 
 export type SignUpInput = {
   email: Scalars['String'];
+  lastName: Scalars['String'];
+  newsLetter: Scalars['Boolean'];
   password: Scalars['String'];
+  phone: Scalars['String'];
   username: Scalars['String'];
 };
 
-export type UpdateAuthInput = {
-  email?: InputMaybe<Scalars['String']>;
-  id: Scalars['String'];
-  password?: InputMaybe<Scalars['String']>;
-  username?: InputMaybe<Scalars['String']>;
+export type UpdateInput = {
+  email: Scalars['String'];
+  lastName: Scalars['String'];
+  newsLetter: Scalars['Boolean'];
+  phone: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type UpdatePasswordInput = {
+  password: Scalars['String'];
+};
+
+export type UpdatePasswordReponse = {
+  __typename?: 'UpdatePasswordReponse';
+  changed: Scalars['Boolean'];
 };
 
 export type User = {
   __typename?: 'User';
   email: Scalars['String'];
   id: Scalars['ID'];
+  lastName: Scalars['String'];
+  newsLetter: Scalars['Boolean'];
+  phone: Scalars['String'];
+  role: Scalars['String'];
+  scribe: Scalars['Boolean'];
   username: Scalars['String'];
 };
+
+export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUsersQuery = { __typename?: 'Query', getUsers: { __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean } };
 
 export type LoginMutationMutationVariables = Exact<{
   input: SignInInput;
 }>;
 
 
-export type LoginMutationMutation = { __typename?: 'Mutation', signin: { __typename?: 'SignReponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, username: string, email: string } } };
+export type LoginMutationMutation = { __typename?: 'Mutation', signin: { __typename?: 'SignReponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean } } };
 
 export type LogoutMutationVariables = Exact<{
   id: Scalars['String'];
@@ -120,9 +145,23 @@ export type LogoutMutationVariables = Exact<{
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: { __typename?: 'LogoutReponse', loggedOut: boolean } };
 
-export type RefreshTokensMutationMutationVariables = Exact<{
-  refreshToken: Scalars['String'];
+export type SignUpUserMutationVariables = Exact<{
+  input: SignUpInput;
 }>;
 
 
-export type RefreshTokensMutationMutation = { __typename?: 'Mutation', getNewTokens: { __typename?: 'NewTokenReponse', accessToken: string, refreshToken: string } };
+export type SignUpUserMutation = { __typename?: 'Mutation', signup: { __typename?: 'SignReponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean } } };
+
+export type UpdateAuthUserMutationVariables = Exact<{
+  input: UpdateInput;
+}>;
+
+
+export type UpdateAuthUserMutation = { __typename?: 'Mutation', updateAuth: { __typename?: 'SignReponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean } } };
+
+export type UpdatePasswordUserMutationVariables = Exact<{
+  input: UpdatePasswordInput;
+}>;
+
+
+export type UpdatePasswordUserMutation = { __typename?: 'Mutation', updatePassword: { __typename?: 'UpdatePasswordReponse', changed: boolean } };

@@ -11,7 +11,7 @@ export class SignUpInput {
   @IsNotEmpty()
   @IsString()
   @Field()
-  name: string;
+  lastName: string;
 
   @IsNotEmpty()
   @IsString()
