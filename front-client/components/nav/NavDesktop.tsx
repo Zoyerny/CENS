@@ -14,7 +14,7 @@ export default function NavDesktop() {
   return (
     <div id="NavDesktop">
       <Link className="logo" href={"/"}>
-        <Image src="/logo.png" width={75} height={75} alt="Logo" />
+        <Image src="/images/Logo.png" width={75} height={75} alt="/images/Logo.png" />
       </Link>
       <ul className="linkPc">
         <li>
