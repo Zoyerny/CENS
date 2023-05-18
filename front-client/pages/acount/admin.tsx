@@ -3,10 +3,11 @@ import { GET_USERS_QUERY } from "@/graphql/getUsers.query";
 import { UPDATE_ADMIN_MUTATION } from "@/graphql/updateAdmin.mutation";
 import { UPDATE_PRATICIEN_MUTATION } from "@/graphql/updatePraticien.mutation";
 import { UPDATE_SCRIBE_MUTATION } from "@/graphql/updateScribe.mutation";
-import { Role } from "@/utils/contexts/auth-context";
+import { Role, useAuth } from "@/utils/contexts/auth-context";
 import { useMutation, useQuery } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 interface UserData {
@@ -23,6 +24,8 @@ interface UserData {
 export default function Admin() {
   const [users, setUsers] = useState<UserData[]>([]);
   const [modal, setModal] = useState<string | null>(null);
+  const { user } = useAuth();
+  const router = useRouter();
   const { data, error, refetch } = useQuery<{
     getUsers: { users: UserData[] };
   }>(GET_USERS_QUERY);
@@ -31,6 +34,12 @@ export default function Admin() {
   const [AdminMutation] = useMutation(UPDATE_ADMIN_MUTATION);
   const [ScribeMutation] = useMutation(UPDATE_SCRIBE_MUTATION);
   const [DeleteUser] = useMutation(DELETE_USER_MUTATION);
+
+  useEffect(() => {
+    if (user?.role !== Role.ADMIN) {
+      router.push("/acount/compte");
+    }
+  }, [user]);
 
   const handleToPraticien = (id: string, bool: boolean) => {
     PraticienMutation({

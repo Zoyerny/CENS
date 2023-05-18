@@ -84,17 +84,17 @@ export type MutationUpdatePasswordArgs = {
 
 
 export type MutationUpdateUserAdminArgs = {
-  signInInput: AdminInput;
+  adminInput: AdminInput;
 };
 
 
 export type MutationUpdateUserPraticienArgs = {
-  signInInput: AdminInput;
+  adminInput: AdminInput;
 };
 
 
 export type MutationUpdateUserScribeArgs = {
-  signInInput: AdminInput;
+  adminInput: AdminInput;
 };
 
 export type NewTokenReponse = {
@@ -165,6 +165,13 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'ChangeResponse', changed: boolean } };
+
 export type GetUsersQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -198,9 +205,30 @@ export type UpdateAuthUserMutationVariables = Exact<{
 
 export type UpdateAuthUserMutation = { __typename?: 'Mutation', updateAuth: { __typename?: 'SignReponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean } } };
 
+export type UpdateUserAdminMutationVariables = Exact<{
+  input: AdminInput;
+}>;
+
+
+export type UpdateUserAdminMutation = { __typename?: 'Mutation', updateUserAdmin: { __typename?: 'ChangeResponse', changed: boolean } };
+
 export type UpdatePasswordUserMutationVariables = Exact<{
   input: UpdatePasswordInput;
 }>;
 
 
 export type UpdatePasswordUserMutation = { __typename?: 'Mutation', updatePassword: { __typename?: 'UpdatePasswordReponse', changed: boolean } };
+
+export type UpdateUserPraticienMutationVariables = Exact<{
+  input: AdminInput;
+}>;
+
+
+export type UpdateUserPraticienMutation = { __typename?: 'Mutation', updateUserPraticien: { __typename?: 'ChangeResponse', changed: boolean } };
+
+export type UpdateUserScribeMutationVariables = Exact<{
+  input: AdminInput;
+}>;
+
+
+export type UpdateUserScribeMutation = { __typename?: 'Mutation', updateUserScribe: { __typename?: 'ChangeResponse', changed: boolean } };
