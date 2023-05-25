@@ -14,7 +14,7 @@ export default function NavDesktop() {
   return (
     <div id="NavDesktop">
       <Link className="logo" href={"/"}>
-        <Image src="/images/Logo.png" width={75} height={75} alt="/images/Logo.png" />
+        <Image src="/images/Logo.png" width={40} height={40} alt="/images/Logo.png" />
       </Link>
       <ul className="linkPc">
         <li>
@@ -38,7 +38,7 @@ export default function NavDesktop() {
         <li>
           <Link
             className={`navText ${
-              router.pathname === "/articles" ? "active" : ""
+              router.pathname.startsWith("/articles/") ? "active" : ""
             }`}
             href={"/articles"}
           >

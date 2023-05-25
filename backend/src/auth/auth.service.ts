@@ -12,6 +12,8 @@ import { UpdateInput } from './dto/update-input';
 import { UpdatePasswordInput } from './dto/update-password-input';
 import { AdminInput } from './dto/admin-input';
 import { Role } from '@prisma/client';
+import { WriteInput } from './dto/write-input';
+import { WriteUpdateInput } from './dto/writeUpdate-input';
 
 @Injectable()
 export class AuthService {
@@ -247,6 +249,7 @@ export class AuthService {
     return { users };
   }
 
+
   async updateUserPraticien(adminInput: AdminInput) {
     await this.prisma.user.updateMany({
       where: {
@@ -288,6 +291,131 @@ export class AuthService {
     })
 
     return { changed: true }
+  }
+
+  async createArticle(writeInput: WriteInput) {
+
+    await this.prisma.articles.create({
+      data: {
+        name: writeInput.articleName,
+        image: writeInput.image,
+        description: writeInput.description,
+        content: writeInput.content,
+        tag: writeInput.tags,
+        userId: writeInput.userId,
+      },
+    });
+
+    return { changed: true };
+  }
+
+  async deleteArticle(articleId: string) {
+    await this.prisma.articles.delete({
+      where: {
+        id: articleId,
+      },
+    })
+
+    return { changed: true }
+  }
+
+
+  async updateArticle(writeUpdateInput: WriteUpdateInput) {
+    const date = new Date()
+    await this.prisma.articles.updateMany({
+      where: {
+        id: writeUpdateInput.articleId,
+      },
+      data: {
+        name: writeUpdateInput.articleName,
+        description: writeUpdateInput.description,
+        content: writeUpdateInput.content,
+        tag: writeUpdateInput.tag,
+        image: writeUpdateInput.image,
+        updatedAt: date.toISOString(),
+      },
+    });
+
+    return { changed: true }
+  }
+
+  async updateArticleValidate(adminInput: AdminInput) {
+    await this.prisma.articles.updateMany({
+      where: {
+        id: adminInput.id,
+      },
+      data: {
+        validate: adminInput.bool,
+      },
+    });
+
+    return { changed: true }
+  }
+
+  async getAllArticles() {
+    const articles = await this.prisma.articles.findMany({
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        description: true,
+        content: true,
+        tag: true,
+        like: true,
+        dislike: true,
+        validate: true,
+        user: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    return { articles };
+  }
+
+  async getOneArticle(id: string) {
+    const article = await this.prisma.articles.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        description: true,
+        content: true,
+        tag: true,
+        like: true,
+        dislike: true,
+        validate: true,
+        user: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    })
+    console.log(article)
+    return { article }
+  }
+  async getMultipleArticle(id: string) {
+    const articles = await this.prisma.articles.findMany({
+      where: {
+        userId: id,
+      },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        description: true,
+        content: true,
+        tag: true,
+        like: true,
+        dislike: true,
+        validate: true,
+        user: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    return { articles };
   }
 
 }

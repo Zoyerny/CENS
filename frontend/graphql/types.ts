@@ -17,6 +17,22 @@ export type AdminInput = {
   id: Scalars['String'];
 };
 
+export type Article = {
+  __typename?: 'Article';
+  content: Scalars['String'];
+  createdAt: Scalars['String'];
+  description: Scalars['String'];
+  dislike: Scalars['Float'];
+  id: Scalars['ID'];
+  image: Scalars['String'];
+  like: Scalars['Float'];
+  name: Scalars['String'];
+  tag: Array<Scalars['String']>;
+  updatedAt: Scalars['String'];
+  user: User;
+  validate: Scalars['Boolean'];
+};
+
 export type Auth = {
   __typename?: 'Auth';
   /** Example field (placeholder) */
@@ -26,6 +42,16 @@ export type Auth = {
 export type ChangeResponse = {
   __typename?: 'ChangeResponse';
   changed: Scalars['Boolean'];
+};
+
+export type GetArticleResponse = {
+  __typename?: 'GetArticleResponse';
+  article: Article;
+};
+
+export type GetArticlesResponse = {
+  __typename?: 'GetArticlesResponse';
+  articles: Array<Article>;
 };
 
 export type GetUsersResponse = {
@@ -40,16 +66,30 @@ export type LogoutReponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createArticle: ChangeResponse;
+  deleteArticle: ChangeResponse;
   deleteUser: ChangeResponse;
   getNewTokens: NewTokenReponse;
   logout: LogoutReponse;
   signin: SignReponse;
   signup: SignReponse;
+  updateArticle: ChangeResponse;
+  updateArticleValidate: ChangeResponse;
   updateAuth: SignReponse;
   updatePassword: UpdatePasswordReponse;
   updateUserAdmin: ChangeResponse;
   updateUserPraticien: ChangeResponse;
   updateUserScribe: ChangeResponse;
+};
+
+
+export type MutationCreateArticleArgs = {
+  writeInput: WriteInput;
+};
+
+
+export type MutationDeleteArticleArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -70,6 +110,16 @@ export type MutationSigninArgs = {
 
 export type MutationSignupArgs = {
   signUpInput: SignUpInput;
+};
+
+
+export type MutationUpdateArticleArgs = {
+  writeUpdateInput: WriteUpdateInput;
+};
+
+
+export type MutationUpdateArticleValidateArgs = {
+  adminInput: AdminInput;
 };
 
 
@@ -106,12 +156,25 @@ export type NewTokenReponse = {
 export type Query = {
   __typename?: 'Query';
   auth: Auth;
+  getArticles: GetArticlesResponse;
+  getMultipleArticle: GetArticlesResponse;
+  getOneArticle: GetArticleResponse;
   getUsers: GetUsersResponse;
   hello: Scalars['String'];
 };
 
 
 export type QueryAuthArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryGetMultipleArticleArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryGetOneArticleArgs = {
   id: Scalars['String'];
 };
 
@@ -164,6 +227,71 @@ export type User = {
   scribe: Scalars['Boolean'];
   username: Scalars['String'];
 };
+
+export type WriteInput = {
+  articleName: Scalars['String'];
+  content: Scalars['String'];
+  description: Scalars['String'];
+  image: Scalars['String'];
+  tags: Array<Scalars['String']>;
+  userId: Scalars['String'];
+};
+
+export type WriteUpdateInput = {
+  articleId: Scalars['String'];
+  articleName: Scalars['String'];
+  content: Scalars['String'];
+  description: Scalars['String'];
+  image: Scalars['String'];
+  tag: Array<Scalars['String']>;
+};
+
+export type CreateArticleMutationVariables = Exact<{
+  input: WriteInput;
+}>;
+
+
+export type CreateArticleMutation = { __typename?: 'Mutation', createArticle: { __typename?: 'ChangeResponse', changed: boolean } };
+
+export type DeleteArticleMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteArticleMutation = { __typename?: 'Mutation', deleteArticle: { __typename?: 'ChangeResponse', changed: boolean } };
+
+export type GetArticlesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetArticlesQueryQuery = { __typename?: 'Query', getArticles: { __typename?: 'GetArticlesResponse', articles: Array<{ __typename?: 'Article', id: string, name: string, image: string, description: string, content: string, tag: Array<string>, like: number, dislike: number, validate: boolean, createdAt: string, updatedAt: string, user: { __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean } }> } };
+
+export type GetMultipleArticleQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetMultipleArticleQuery = { __typename?: 'Query', getMultipleArticle: { __typename?: 'GetArticlesResponse', articles: Array<{ __typename?: 'Article', id: string, name: string, image: string, description: string, content: string, tag: Array<string>, like: number, dislike: number, validate: boolean, createdAt: string, updatedAt: string, user: { __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean } }> } };
+
+export type GetOneArticleQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetOneArticleQuery = { __typename?: 'Query', getOneArticle: { __typename?: 'GetArticleResponse', article: { __typename?: 'Article', id: string, name: string, image: string, description: string, content: string, tag: Array<string>, like: number, dislike: number, validate: boolean, createdAt: string, updatedAt: string, user: { __typename?: 'User', id: string, role: string, username: string, lastName: string, email: string, phone: string, newsLetter: boolean, scribe: boolean } } } };
+
+export type UpdateArticleMutationVariables = Exact<{
+  input: WriteUpdateInput;
+}>;
+
+
+export type UpdateArticleMutation = { __typename?: 'Mutation', updateArticle: { __typename?: 'ChangeResponse', changed: boolean } };
+
+export type UpdateArticleValidateMutationVariables = Exact<{
+  input: AdminInput;
+}>;
+
+
+export type UpdateArticleValidateMutation = { __typename?: 'Mutation', updateArticleValidate: { __typename?: 'ChangeResponse', changed: boolean } };
 
 export type DeleteUserMutationVariables = Exact<{
   id: Scalars['String'];

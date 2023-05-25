@@ -1,4 +1,4 @@
-import { LOGOUT_MUTATION } from "@/graphql/logout.mutation";
+import { LOGOUT_MUTATION } from "@/graphql/auth/logout.mutation";
 import { useAuth } from "@/utils/contexts/auth-context";
 import { useMutation } from "@apollo/client";
 import Image from "next/image";
@@ -47,15 +47,15 @@ export default function ConnexionMobile() {
             {router.pathname === "/acount" ? (
               <Image
                 src="/svg/acountActive.svg"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
                 alt="AcountActive"
               />
             ) : (
               <Image
                 src="/svg/acount.svg"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
                 alt="AcountNormal"
               />
             )}

@@ -90,15 +90,23 @@
       flex-direction: column;
       align-items: center;
 
+      .deleteUser {
+        font-size: 1.4rem;
+        margin-top: 100px;
+        margin-bottom: 50px;
+
+        @include bp("tablette") {
+          align-self: flex-end;
+          margin-right: 50px;
+        }
+      }
+
       #UpdateForm {
         flex-direction: column;
+        align-items: center;
         width: 100%;
         padding-top: 20px;
         padding-bottom: 20px;
-
-        @include bp("tablette") {
-          width: 40%;
-        }
 
         .wrap {
           display: flex;
@@ -106,7 +114,6 @@
           gap: 30px;
           width: 100%;
           align-items: center;
-          justify-content: center;
 
           @include bp("tablette") {
             flex-direction: row;
@@ -159,27 +166,27 @@
       gap: 20px;
     }
 
-    #contentAdmin{
+    #contentAdmin {
       display: flex;
       flex-direction: column;
       gap: 20px;
       width: 100%;
       height: 100%;
 
-      .card{
+      .card {
         width: 100%;
         display: flex;
         justify-content: space-between;
         border-bottom: #101010 solid 1px;
 
-        .userInfo{
-          overflow:hidden;
+        .userInfo {
+          overflow: hidden;
           display: flex;
           flex-wrap: wrap;
           gap: 10px;
           margin-left: 10px;
 
-          .section{
+          .section {
             border-right: #101010 solid 1px;
             min-width: 100px;
             text-overflow: ellipsis;
@@ -188,13 +195,13 @@
             justify-content: center;
             text-align: start;
 
-            p:not(.medium){
-              color: #6A6968;
+            p:not(.medium) {
+              color: #6a6968;
             }
           }
         }
-        .buttonsCard{
-          .optionsModal{
+        .buttonsCard {
+          .optionsModal {
             list-style: none;
             position: absolute;
             right: 5%;
@@ -205,13 +212,116 @@
             gap: 10px;
             padding: 10px;
           }
-
-          .red{
-            color: red;
-          }
         }
       }
     }
+  }
+}
+
+#write {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  #NavWrite {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  #contentWrite {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+
+    #WriteForm {
+      flex-direction: column;
+      align-items: center;
+      gap: 50px;
+      .wrap{
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        width: 100%;
+
+        .group{
+          display: flex;
+          width: 100%;
+          justify-content: space-around;
+        }
+        .content {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding-left: 20px;
+          padding-right: 20px;
+
+          textarea {
+            border: none;
+            padding: 10px;
+            width: 100%;
+            font-size: 1.8rem;
+            font-weight: 700;
+          }
+
+          .contentText{
+            height: 300px;
+          }
+
+
+        }
+      }
+
+    }
+
+    .card {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: #101010 solid 1px;
+
+      .userInfo {
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-left: 10px;
+
+        .section {
+          border-right: #101010 solid 1px;
+          min-width: 100px;
+          text-overflow: ellipsis;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: start;
+
+          p:not(.medium) {
+            color: #6a6968;
+          }
+        }
+      }
+      .buttonsCard {
+        .optionsModal {
+          list-style: none;
+          position: absolute;
+          right: 5%;
+          background: #fff;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: 10px;
+        }
+      }
+    }
+  
   }
 }
 

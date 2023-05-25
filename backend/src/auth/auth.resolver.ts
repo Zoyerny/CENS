@@ -17,6 +17,11 @@ import { UpdatePasswordReponse } from './dto/update-password-response';
 import { GetUsersResponse } from './dto/getUsers-response';
 import { ChangeResponse } from './dto/change-response';
 import { AdminInput } from './dto/admin-input';
+import { WriteInput } from './dto/write-input';
+import { GetArticlesResponse } from './dto/getArticles-response';
+import { WriteUpdateInput } from './dto/writeUpdate-input';
+import { Article } from 'src/articles/article.entity';
+import { GetArticleResponse } from './dto/getArticle-response';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -49,13 +54,13 @@ export class AuthResolver {
   @Mutation(() => SignReponse)
   updateAuth(@CurrentUserId() userId: string, @Args('updateInput') updateInput: UpdateInput) {
     // Appelle le service AuthService pour mettre à jour les informations d'un utilisateur
-    return this.authService.update(userId,updateInput);
+    return this.authService.update(userId, updateInput);
   }
 
   @Mutation(() => UpdatePasswordReponse)
   updatePassword(@CurrentUserId() userId: string, @Args('updatePasswordInput') updatePasswordInput: UpdatePasswordInput) {
     // Appelle le service AuthService pour mettre à jour les informations d'un utilisateur
-    return this.authService.updatePassword(userId,updatePasswordInput);
+    return this.authService.updatePassword(userId, updatePasswordInput);
   }
 
   // Mutation pour déconnecter un utilisateur
@@ -97,6 +102,44 @@ export class AuthResolver {
   deleteUser(@Args('id', { type: () => String }) id: string) {
     // Appelle le service AuthService pour mettre à jour les informations d'un utilisateur
     return this.authService.deleteUser(id);
+  }
+
+  @Mutation(() => ChangeResponse)
+  createArticle(@Args('writeInput') writeInput: WriteInput) {
+    return this.authService.createArticle(writeInput);
+  }
+
+  @Mutation(() => ChangeResponse)
+  deleteArticle(@Args('id', { type: () => String }) id: string) {
+    return this.authService.deleteArticle(id);
+  }
+
+  @Mutation(() => ChangeResponse)
+  updateArticle(@Args('writeUpdateInput') writeUpdateInput: WriteUpdateInput) {
+    return this.authService.updateArticle(writeUpdateInput);
+  }
+
+  @Mutation(() => ChangeResponse)
+  updateArticleValidate(@Args('adminInput') adminInput: AdminInput) {
+    return this.authService.updateArticleValidate(adminInput);
+  }
+
+  @Public()
+  @Query(() => GetArticleResponse)
+  getOneArticle(@Args('id', { type: () => String }) id: string) {
+    return this.authService.getOneArticle(id);
+  }
+
+  @Public()
+  @Query(() => GetArticlesResponse)
+  getMultipleArticle(@Args('id', { type: () => String }) id: string) {
+    return this.authService.getMultipleArticle(id);
+  }
+
+  @Public()
+  @Query(() => GetArticlesResponse)
+  getArticles() {
+    return this.authService.getAllArticles();
   }
 
   @Public()

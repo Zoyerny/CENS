@@ -1,47 +1,59 @@
-import { DELETE_USER_MUTATION } from "@/graphql/deleteUser.mutation";
-import { GET_USERS_QUERY } from "@/graphql/getUsers.query";
-import { UPDATE_ADMIN_MUTATION } from "@/graphql/updateAdmin.mutation";
-import { UPDATE_PRATICIEN_MUTATION } from "@/graphql/updatePraticien.mutation";
-import { UPDATE_SCRIBE_MUTATION } from "@/graphql/updateScribe.mutation";
+import { DELETE_USER_MUTATION } from "@/graphql/auth/deleteUser.mutation";
+import { GET_ARTICLES_QUERY } from "@/graphql/articles/getArticles.query";
+import { GET_USERS_QUERY } from "@/graphql/auth/getUsers.query";
+import { UPDATE_ADMIN_MUTATION } from "@/graphql/user/updateAdmin.mutation";
+import { UPDATE_PRATICIEN_MUTATION } from "@/graphql/user/updatePraticien.mutation";
+import { UPDATE_SCRIBE_MUTATION } from "@/graphql/user/updateScribe.mutation";
 import { Role, useAuth } from "@/utils/contexts/auth-context";
 import { useMutation, useQuery } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
-interface UserData {
-  id: string;
-  role: Role;
-  username: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  newsLetter: boolean;
-  scribe: boolean;
-}
+import { ArticleData, UserData } from ".";
+import { DELETE_ARTICLE_MUTATION } from "@/graphql/articles/deleteArticle.mutation";
+import { UPDATE_ARTICLEVALIDATE_MUTATION } from "@/graphql/articles/updateArticleValidate.mutation";
 
 export default function Admin() {
+  const [nav, setNav] = useState<Number>(0);
+
   const [users, setUsers] = useState<UserData[]>([]);
-  const [modal, setModal] = useState<string | null>(null);
+  const [articles, setArticles] = useState<ArticleData[]>([]);
+  const [allArticles, setAllArticles] = useState<boolean>(false);
+  const [modalUsers, setModalUsers] = useState<string | null>(null);
+  const [modalArticles, setModalArticles] = useState<string | null>(null);
   const { user } = useAuth();
   const router = useRouter();
-  const { data, error, refetch } = useQuery<{
+  const {
+    data: usersData,
+    error: usersError,
+    refetch: usersRefetch,
+  } = useQuery<{
     getUsers: { users: UserData[] };
   }>(GET_USERS_QUERY);
+
+  const {
+    data: articlesData,
+    error: articlesError,
+    refetch: articlesRefetch,
+  } = useQuery<{
+    getArticles: { articles: ArticleData[] };
+  }>(GET_ARTICLES_QUERY);
 
   const [PraticienMutation] = useMutation(UPDATE_PRATICIEN_MUTATION);
   const [AdminMutation] = useMutation(UPDATE_ADMIN_MUTATION);
   const [ScribeMutation] = useMutation(UPDATE_SCRIBE_MUTATION);
   const [DeleteUser] = useMutation(DELETE_USER_MUTATION);
 
+  const [validateMutation] = useMutation(UPDATE_ARTICLEVALIDATE_MUTATION);
+  const [DeleteArticle] = useMutation(DELETE_ARTICLE_MUTATION);
   useEffect(() => {
     if (user?.role !== Role.ADMIN) {
       router.push("/acount/compte");
     }
   }, [user]);
 
-  const handleToPraticien = (id: string, bool: boolean) => {
+  const handleUserToPraticien = (id: string, bool: boolean) => {
     PraticienMutation({
       variables: {
         input: {
@@ -56,15 +68,16 @@ export default function Admin() {
             "Change To praticien :",
             result.data.updateUserPraticien.changed
           );
-          handleReloadData();
+          handleReloadDataUser();
         }
       })
       .catch((error) => {
         console.error("Error during logout:", error);
       });
-    setModal(null);
+    setModalUsers(null);
   };
-  const handleToAdmin = (id: string, bool: boolean) => {
+
+  const handleUserToAdmin = (id: string, bool: boolean) => {
     AdminMutation({
       variables: {
         input: {
@@ -76,16 +89,16 @@ export default function Admin() {
       .then((result) => {
         if (result.data) {
           console.log("Change To Admin :", result.data.updateUserAdmin.changed);
-          handleReloadData();
+          handleReloadDataUser();
         }
       })
       .catch((error) => {
         console.error("Error during logout:", error);
       });
-    setModal(null);
+    setModalUsers(null);
   };
 
-  const handleToScribe = (id: string, bool: boolean) => {
+  const handleUserToScribe = (id: string, bool: boolean) => {
     ScribeMutation({
       variables: {
         input: {
@@ -100,76 +113,248 @@ export default function Admin() {
             "Change To Scribe :",
             result.data.updateUserScribe.changed
           );
-          handleReloadData();
+          handleReloadDataUser();
         }
       })
       .catch((error) => {
         console.error("Error during logout:", error);
       });
-    setModal(null);
+    setModalUsers(null);
   };
 
-  const handleDeleteUser = (id: string) => {
+  const handleUserDeleteUser = (id: string) => {
     DeleteUser({ variables: { id: id } })
       .then((result) => {
         if (result.data) {
           console.log("Deleted user :", result.data.deleteUser.changed);
-          handleReloadData();
+          handleReloadDataUser();
         }
       })
       .catch((error) => {
         console.error("Error during logout:", error);
       });
-    setModal(null);
+    setModalUsers(null);
   };
 
-  const handleChange = (str: string) => {
-    if (modal === str) {
-      setModal(null);
+  const handleUserDeleteArticles = (id: string) => {
+    DeleteArticle({ variables: { id: id } })
+      .then((result) => {
+        if (result.data) {
+          console.log("Deleted Article :", result.data.deleteArticle.changed);
+          handleReloadDataArticles();
+        }
+      })
+      .catch((error) => {
+        console.error("Error during delete:", error);
+      });
+    setModalArticles(null);
+  };
+  const handleArticleValidate = (id: string, bool: boolean) => {
+    validateMutation({
+      variables: {
+        input: {
+          id,
+          bool,
+        },
+      },
+    })
+      .then((result) => {
+        if (result.data) {
+          console.log(
+            "Change To praticien :",
+            result.data.updateArticleValidate.changed
+          );
+          handleReloadDataArticles();
+        }
+      })
+      .catch((error) => {
+        console.error("Error during logout:", error);
+      });
+    setModalArticles(null);
+  };
+
+  const handleChangeModalUser = (str: string) => {
+    if (modalUsers === str) {
+      setModalUsers(null);
     } else {
-      setModal(str);
+      setModalUsers(str);
+    }
+  };
+  const handleChangeModalArticles = (str: string) => {
+    if (modalArticles === str) {
+      setModalArticles(null);
+    } else {
+      setModalArticles(str);
     }
   };
 
-  const handleReloadData = () => {
-    refetch();
+  const handleReloadDataUser = () => {
+    usersRefetch();
+  };
+  const handleReloadDataArticles = () => {
+    articlesRefetch();
   };
 
   useEffect(() => {
-    if (data) {
-      setUsers(data.getUsers.users);
-      console.log(data.getUsers.users);
+    if (usersData) {
+      setUsers(usersData.getUsers.users);
     }
-  }, [data]);
+  }, [usersData]);
+  useEffect(() => {
+    if (articlesData) {
+      setArticles(articlesData.getArticles.articles);
+    }
+  }, [articlesData]);
 
   useEffect(() => {
-    if (error) {
-      console.error(error);
+    if (usersError) {
+      console.error(usersError);
     }
-  }, [error]);
+  }, [usersError]);
+
+  useEffect(() => {
+    if (articlesError) {
+      console.error(articlesError);
+    }
+  }, [articlesError]);
+
+  useEffect(() => {
+    handleReloadDataUser();
+    handleReloadDataArticles();
+  }, [nav]);
 
   return (
     <div id="admin">
       <h2>Admin</h2>
       <ul id="NavAdmin">
         <li>
-          <Link className={`navTextPc`} href={"/"}>
+          <button
+            className={`navTextPc ${nav === 0 ? "active" : ""}`}
+            onClick={() => setNav(0)}
+          >
             Articles
-          </Link>
+          </button>
         </li>
         <li>
-          <Link className={`navTextPc `} href={"/"}>
+          <button
+            className={`navTextPc ${nav === 1 ? "active" : ""}`}
+            onClick={() => setNav(1)}
+          >
             Formation
-          </Link>
+          </button>
         </li>
         <li>
-          <Link className={`navTextPc`} href={"/"}>
+          <button
+            className={`navTextPc ${nav === 2 ? "active" : ""}`}
+            onClick={() => setNav(2)}
+          >
             utilisateur
-          </Link>
+          </button>
+        </li>
+        <li>
+          <button
+            className={`navTextPc ${nav === 3 ? "active" : ""}`}
+            onClick={() => setNav(3)}
+          >
+            NewsLetter
+          </button>
         </li>
       </ul>
       <div id="contentAdmin">
-        {users.length > 0 && (
+        {nav === 0 && articles.length > 0 && (
+          <>
+            <div className="content">
+              <label htmlFor="allArticle">Show all</label>
+              <input
+                type="checkbox"
+                name="allArticle"
+                id="allArticle"
+                defaultChecked={allArticles}
+                onChange={(e) => setAllArticles(e.target.checked)}
+              />
+            </div>
+            {[...articles]
+              .filter((article) => allArticles || !article.validate)
+              .map((article) => (
+                <div className="card" key={article.id}>
+                  <div className="userInfo">
+                    <div className="section">
+                      <p className="medium">Name</p>
+                      <p>{article.name}</p>
+                    </div>
+                    <div className="section">
+                      <p className="medium">Author</p>
+                      <p>
+                        {article.user.username} - {article.user.lastName}
+                      </p>
+                    </div>
+                    <div className="section">
+                      <p className="medium">Validate</p>
+                      <p>{article.validate.toString().toUpperCase()}</p>
+                    </div>
+                    <div className="section">
+                      <p className="medium">Lien</p>
+                      <Link href={"/articles/" + article.id}>{article.id}</Link>
+                    </div>
+                  </div>
+                  <div className="buttonsCard">
+                    <button
+                      onClick={() => handleChangeModalArticles(article.id)}
+                    >
+                      <Image
+                        src="/svg/dashBordAcount/option.svg"
+                        width={35}
+                        height={35}
+                        alt="Logo"
+                      />
+                    </button>
+                    {modalArticles === article.id && (
+                      <ul className="optionsModal">
+                        <li>
+                          <button
+                            className={`navTextPc`}
+                            onClick={() =>
+                              article.validate
+                                ? handleArticleValidate(article.id, false)
+                                : handleArticleValidate(article.id, true)
+                            }
+                          >
+                            {article.validate ? (
+                              <span className="red">
+                                Remove validate Article
+                              </span>
+                            ) : (
+                              <span>Validate Article</span>
+                            )}
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className={`navTextPc`}
+                            onClick={() =>
+                              router.push("/acount/write/" + article.id)
+                            }
+                          >
+                            <span className="red">Modifié</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className={`navTextPc red`}
+                            onClick={() => handleUserDeleteArticles(article.id)}
+                          >
+                            Delete Articles
+                          </button>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              ))}
+          </>
+        )}
+        {nav === 1 && <div>Formation</div>}
+        {nav === 2 && users.length > 0 && (
           <>
             {[...users]
               .sort((a, b) => {
@@ -216,7 +401,7 @@ export default function Admin() {
                     </div>
                   </div>
                   <div className="buttonsCard">
-                    <button onClick={() => handleChange(user.id)}>
+                    <button onClick={() => handleChangeModalUser(user.id)}>
                       <Image
                         src="/svg/dashBordAcount/option.svg"
                         width={35}
@@ -224,15 +409,15 @@ export default function Admin() {
                         alt="Logo"
                       />
                     </button>
-                    {modal === user.id && (
+                    {modalUsers === user.id && (
                       <ul className="optionsModal">
                         <li>
                           <button
                             className={`navTextPc`}
                             onClick={() =>
                               user.role === Role.PRATICIEN
-                                ? handleToPraticien(user.id, false)
-                                : handleToPraticien(user.id, true)
+                                ? handleUserToPraticien(user.id, false)
+                                : handleUserToPraticien(user.id, true)
                             }
                           >
                             {user.role === Role.PRATICIEN ? (
@@ -247,8 +432,8 @@ export default function Admin() {
                             className={`navTextPc`}
                             onClick={() =>
                               user.role === Role.ADMIN
-                                ? handleToAdmin(user.id, false)
-                                : handleToAdmin(user.id, true)
+                                ? handleUserToAdmin(user.id, false)
+                                : handleUserToAdmin(user.id, true)
                             }
                           >
                             {user.role === Role.ADMIN ? (
@@ -263,8 +448,8 @@ export default function Admin() {
                             className={`navTextPc`}
                             onClick={() =>
                               !user.scribe
-                                ? handleToScribe(user.id, true)
-                                : handleToScribe(user.id, false)
+                                ? handleUserToScribe(user.id, true)
+                                : handleUserToScribe(user.id, false)
                             }
                           >
                             {!user.scribe ? (
@@ -277,7 +462,7 @@ export default function Admin() {
                         <li>
                           <button
                             className={`navTextPc red`}
-                            onClick={() => handleDeleteUser(user.id)}
+                            onClick={() => handleUserDeleteUser(user.id)}
                           >
                             Delete user
                           </button>
@@ -289,6 +474,7 @@ export default function Admin() {
               ))}
           </>
         )}
+        {nav === 3 && <div>NewsLetter</div>}
       </div>
     </div>
   );

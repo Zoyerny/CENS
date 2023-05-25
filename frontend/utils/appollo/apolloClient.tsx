@@ -8,7 +8,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  // Récupérez les cookies depuis le côté serveur
+  // Récupérez les cookies 
   const cookies = parseCookies();
 
   const token = cookies.cookieAccessToken;

@@ -7,6 +7,21 @@ input AdminInput {
   id: String!
 }
 
+type Article {
+  content: String!
+  createdAt: String!
+  description: String!
+  dislike: Float!
+  id: ID!
+  image: String!
+  like: Float!
+  name: String!
+  tag: [String!]!
+  updatedAt: String!
+  user: User!
+  validate: Boolean!
+}
+
 type Auth {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -14,6 +29,14 @@ type Auth {
 
 type ChangeResponse {
   changed: Boolean!
+}
+
+type GetArticleResponse {
+  article: Article!
+}
+
+type GetArticlesResponse {
+  articles: [Article!]!
 }
 
 type GetUsersResponse {
@@ -25,11 +48,15 @@ type LogoutReponse {
 }
 
 type Mutation {
+  createArticle(writeInput: WriteInput!): ChangeResponse!
+  deleteArticle(id: String!): ChangeResponse!
   deleteUser(id: String!): ChangeResponse!
   getNewTokens: NewTokenReponse!
   logout(id: String!): LogoutReponse!
   signin(signInInput: SignInInput!): SignReponse!
   signup(signUpInput: SignUpInput!): SignReponse!
+  updateArticle(writeUpdateInput: WriteUpdateInput!): ChangeResponse!
+  updateArticleValidate(adminInput: AdminInput!): ChangeResponse!
   updateAuth(updateInput: UpdateInput!): SignReponse!
   updatePassword(updatePasswordInput: UpdatePasswordInput!): UpdatePasswordReponse!
   updateUserAdmin(adminInput: AdminInput!): ChangeResponse!
@@ -44,6 +71,9 @@ type NewTokenReponse {
 
 type Query {
   auth(id: String!): Auth!
+  getArticles: GetArticlesResponse!
+  getMultipleArticle(id: String!): GetArticlesResponse!
+  getOneArticle(id: String!): GetArticleResponse!
   getUsers: GetUsersResponse!
   hello: String!
 }
@@ -93,4 +123,22 @@ type User {
   role: String!
   scribe: Boolean!
   username: String!
+}
+
+input WriteInput {
+  articleName: String!
+  content: String!
+  description: String!
+  image: String!
+  tags: [String!]!
+  userId: String!
+}
+
+input WriteUpdateInput {
+  articleId: String!
+  articleName: String!
+  content: String!
+  description: String!
+  image: String!
+  tag: [String!]!
 }

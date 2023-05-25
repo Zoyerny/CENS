@@ -2,8 +2,6 @@
 form {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
   gap: 30px;
   *:focus {
     outline: none;
@@ -13,14 +11,6 @@ form {
     font-weight: 700;
     font-size: 1.8rem;
     color: #101010;
-  }
-
-  .searchBar {
-    background: url("/images/form/search.png");
-  }
-
-  .localisationBar {
-    background: url("/images/form/localisation.png");
   }
 
   input::placeholder {

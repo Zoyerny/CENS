@@ -15,7 +15,7 @@ export default function NavMobile() {
     <>
       <div id="navMobile">
         <Link href={"/"}>
-          <Image src="/images/logo.png" width={75} height={75} alt="Logo" />
+          <Image src="/images/logo.png" width={40} height={40} alt="Logo" />
         </Link>
         <button id="ButtonMobile" onClick={handleToggle}>
           {isOpen ? (

@@ -1,6 +1,6 @@
 import { useState, FormEvent, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { REGISTER_MUTATION } from "@/graphql/register.mutation";
+import { REGISTER_MUTATION } from "@/graphql/auth/register.mutation";
 import { useAuth } from "@/utils/contexts/auth-context";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -131,8 +131,8 @@ export default function Inscription() {
               onChange={(e) => setPasswordConfirm(e.target.value)}
             />
             {errorPassword && (
-              <div style={{ color: "red" }}>
-                <span>Les mots de passes ne sont pas identique !</span>
+              <div>
+                <span className="red">Les mots de passes ne sont pas identique !</span>
               </div>
             )}
           </div>
@@ -157,9 +157,9 @@ export default function Inscription() {
           </div>
         </div>
         {error && (
-          <div style={{ color: "red" }}>
+          <div>
             {error.graphQLErrors.map(({ message }, i) => (
-              <span key={i}>{message}</span>
+              <span className="red" key={i}>{message}</span>
             ))}
           </div>
         )}

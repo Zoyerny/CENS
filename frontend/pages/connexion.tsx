@@ -1,6 +1,6 @@
 import { useState, FormEvent, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { LOGIN_MUTATION } from "../graphql/login.mutation";
+import { LOGIN_MUTATION } from "../graphql/auth/login.mutation";
 import { useAuth } from "@/utils/contexts/auth-context";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -32,7 +32,6 @@ export default function Connexion() {
     })
       .then((result) => {
         if (result.data) {
-          console.log("Connexion :", result);
           setUser(result.data.signin.user);
           setAccessToken(result.data.signin.accessToken);
           setRefreshToken(result.data.signin.refreshToken);
@@ -67,9 +66,9 @@ export default function Connexion() {
           onChange={(e) => setPassword(e.target.value)}
         />
         {error && (
-          <div style={{ color: "red" }}>
+          <div>
             {error.graphQLErrors.map(({ message }, i) => (
-              <span key={i}>{message}</span>
+              <span className="red" key={i}>{message}</span>
             ))}
           </div>
         )}

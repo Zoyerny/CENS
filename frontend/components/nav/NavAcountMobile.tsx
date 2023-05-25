@@ -1,4 +1,4 @@
-import { LOGOUT_MUTATION } from "@/graphql/logout.mutation";
+import { LOGOUT_MUTATION } from "@/graphql/auth/logout.mutation";
 import { useAuth } from "@/utils/contexts/auth-context";
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
@@ -16,7 +16,6 @@ export default function NavAcountMobile({ setIsOpen }: NavSettingsProps) {
   const router = useRouter();
 
   const handleCloseModal = () => {
-    console.log("je passe ici");
     setIsOpen(false);
   };
 

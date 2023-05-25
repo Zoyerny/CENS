@@ -10,34 +10,46 @@ export default function Home() {
   return (
     <div id="home">
       <header>
-        <div className="slide">
-          <h1>Le Cercle des Energies Nouvelles de Soin</h1>
-        </div>
-
-        <div className="searchBack">
-          <h2>Rechecher une : formation</h2>
-          <div className="search">
-            <form onSubmit={(event) => handleSearch(event)}>
-              <input
-                type="text"
-                className="searchBar"
-                name="what"
-                id="what"
-                placeholder="Que recherchez vous ? "
-              />
-              <input
-                type="text"
-                className="localisationBar"
-                name="where"
-                id="where"
-                placeholder="Saissisez une ville ou une region"
-              />
-              <button className="submit" type="submit">
-                <p className="medium">RECHERCHER</p>
-              </button>
-            </form>
+        <h1>Le Cercle des Energies Nouvelles de Soin</h1>
+        <form className="searchBack" onSubmit={(event) => handleSearch(event)}>
+          <div className="inputContain">
+            <Image src="/svg/search.svg" width={20} height={23} alt="article" />
+            <input
+              type="text"
+              name="what"
+              id="what"
+              placeholder="Que recherchez vous ? "
+            />
           </div>
-        </div>
+          <div className="sepH" />
+          <div className="sepV" />
+          <div className="inputContain">
+            <Image
+              src="/svg/location.svg"
+              width={20}
+              height={23}
+              alt="article"
+            />
+            <input
+              type="text"
+              name="where"
+              id="where"
+              placeholder="Saissisez une ville ou une region"
+            />
+          </div>
+          <div className="sepH" />
+          <button className="submit" type="submit">
+            <p className="medium">
+              RECHERCHER
+            </p>
+            <Image
+                src="/svg/send.svg"
+                width={20}
+                height={23}
+                alt="article"
+              />
+          </button>
+        </form>
       </header>
 
       <section id="articleBack">
@@ -126,20 +138,20 @@ export default function Home() {
         <article className="imgRandom">
           <Image
             src="/images/article/article1.jpg"
-            width={175}
-            height={175}
+            width={100}
+            height={100}
             alt="article"
           />
           <Image
-            src="/images/article/article1.jpg"
-            width={200}
-            height={200}
+            src="/images/article/article2.png"
+            width={250}
+            height={250}
             alt="article"
           />
           <Image
-            src="/images/article/article1.jpg"
-            width={175}
-            height={175}
+            src="/images/article/article3.jpg"
+            width={150}
+            height={150}
             alt="article"
           />
         </article>

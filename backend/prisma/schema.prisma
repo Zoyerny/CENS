@@ -18,20 +18,22 @@ enum Role {
 }
 
 model User {
-  id                 String    @id @default(uuid())
-  role               Role      @default(USER)
+  id                 String     @id @default(uuid())
+  role               Role       @default(USER)
   username           String
   lastName           String
-  email              String    @unique
+  email              String     @unique
   phone              String?
   hashedPassword     String
   hashedRefreshToken String?
   newsLetter         Boolean
-  scribe             Boolean   @default(false)
-  sentMessages       Message[] @relation("sentMessages")
-  receivedMessages   Message[] @relation("receivedMessages")
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @default(now())
+  scribe             Boolean    @default(false)
+  sentMessages       Message[]  @relation("sentMessages")
+  receivedMessages   Message[]  @relation("receivedMessages")
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @default(now())
+  Products           Products[]
+  Articles           Articles[]
 }
 
 enum ProductsType {
@@ -52,6 +54,8 @@ model Products {
   tag         String[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now())
+  userId      String
+  User        User         @relation(fields: [userId], references: [id])
 }
 
 model Articles {
@@ -61,8 +65,11 @@ model Articles {
   description String
   content     String
   tag         String[]
-  like        Int
-  dislike     Int
+  like        Int      @default(0)
+  dislike     Int      @default(0)
+  validate    Boolean  @default(false)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 }

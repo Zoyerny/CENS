@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/accessToken.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
+import { ArticlesModule } from './articles/articles.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { JwtService } from '@nestjs/jwt';
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     UserModule,
+    ArticlesModule,
   ],
   controllers: [],
   providers: [

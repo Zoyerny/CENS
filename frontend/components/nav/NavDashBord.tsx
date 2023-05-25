@@ -34,7 +34,7 @@ export default function NavDashBord() {
       if (!isDown) return;
       e.preventDefault();
       const x = e.pageX - scrollContainer!.offsetLeft;
-      const walk = (x - startX) * 3; //scroll-fast
+      const walk = (x - startX) * 3; 
       scrollContainer!.scrollLeft = scrollLeft - walk;
     };
 
@@ -66,7 +66,7 @@ export default function NavDashBord() {
         <Link
           href={"/acount/compte"}
           className={`navDashBord ${
-            router.pathname === "/acount/compte" ? "active" : ""
+            router.pathname.startsWith("/acount/compte")  ? "active" : ""
           }`}
         >
           <Image
@@ -83,11 +83,11 @@ export default function NavDashBord() {
           <Link
             href={"/acount/admin"}
             className={`navDashBord ${
-              router.pathname === "/acount/admin" ? "active" : ""
+              router.pathname.startsWith("/acount/admin")  ? "active" : ""
             }`}
           >
             <Image
-              src="/svg/dashBordAcount/support.svg"
+              src="/svg/dashBordAcount/admin.svg"
               width={35}
               height={35}
               alt="Logo"
@@ -101,11 +101,11 @@ export default function NavDashBord() {
           <Link
             href={"/acount/write"}
             className={`navDashBord ${
-              router.pathname === "/acount/write" ? "active" : ""
+              router.pathname.startsWith("/acount/write")  ? "active" : ""
             }`}
           >
             <Image
-              src="/svg/dashBordAcount/support.svg"
+              src="/svg/dashBordAcount/write.svg"
               width={35}
               height={35}
               alt="Logo"
@@ -119,11 +119,11 @@ export default function NavDashBord() {
           <Link
             href={"/acount/formation"}
             className={`navDashBord ${
-              router.pathname === "/acount/formation" ? "active" : ""
+              router.pathname.startsWith("/acount/formation")  ? "active" : ""
             }`}
           >
             <Image
-              src="/svg/dashBordAcount/support.svg"
+              src="/svg/dashBordAcount/formation.svg"
               width={35}
               height={35}
               alt="Logo"
@@ -136,7 +136,7 @@ export default function NavDashBord() {
         <Link
           href={"/acount/wishlist"}
           className={`navDashBord ${
-            router.pathname === "/acount/wishlist" ? "active" : ""
+            router.pathname.startsWith("/acount/wishlist")  ? "active" : ""
           }`}
         >
           <Image
@@ -152,7 +152,7 @@ export default function NavDashBord() {
         <Link
           href={"/acount/support"}
           className={`navDashBord ${
-            router.pathname === "/acount/support" ? "active" : ""
+            router.pathname.startsWith("/acount/support")  ? "active" : ""
           }`}
         >
           <Image

@@ -1,5 +1,6 @@
-import { UPDATE_MUTATION } from "@/graphql/update.mutation";
-import { UPDATEPASSWORD_MUTATION } from "@/graphql/updatePassword.mutation";
+import { DELETE_USER_MUTATION } from "@/graphql/auth/deleteUser.mutation";
+import { UPDATE_MUTATION } from "@/graphql/user/update.mutation";
+import { UPDATEPASSWORD_MUTATION } from "@/graphql/user/updatePassword.mutation";
 import { useAuth } from "@/utils/contexts/auth-context";
 import { useMutation } from "@apollo/client";
 import Image from "next/image";
@@ -21,7 +22,7 @@ export default function Profile() {
 
   const [UpdateMutation, { error }] = useMutation(UPDATE_MUTATION);
   const [UpdatePasswordMutation] = useMutation(UPDATEPASSWORD_MUTATION);
-
+  const [DeleteUser] = useMutation(DELETE_USER_MUTATION);
   useEffect(() => {
     if (user) {
       setUsername(user.username);
@@ -47,6 +48,19 @@ export default function Profile() {
       seterrorPassword(true);
     }
   }, [password, passwordConfirm]);
+
+  const handleUserDeleteUser = (id: string) => {
+    DeleteUser({ variables: { id: id } })
+      .then((result) => {
+        if (result.data) {
+          console.log("Deleted user :", result.data.deleteUser.changed);
+          router.push("/")
+        }
+      })
+      .catch((error) => {
+        console.error("Error during logout:", error);
+      });
+  };
 
   const handleUpdate = (event: FormEvent) => {
     event.preventDefault();
@@ -169,8 +183,10 @@ export default function Profile() {
                 onChange={(e) => setPasswordConfirm(e.target.value)}
               />
               {errorPassword && (
-                <div style={{ color: "red" }}>
-                  <span>Les mots de passes ne sont pas identique !</span>
+                <div>
+                  <span className="red">
+                    Les mots de passes ne sont pas identique !
+                  </span>
                 </div>
               )}
             </div>
@@ -190,14 +206,17 @@ export default function Profile() {
             </div>
           </div>
           {error && (
-            <div style={{ color: "red" }}>
+            <div>
               {error.graphQLErrors.map(({ message }, i) => (
-                <span key={i}>{message}</span>
+                <span className="red" key={i}>
+                  {message}
+                </span>
               ))}
             </div>
           )}
           <button type="submit">Send</button>
         </form>
+        <button onClick={() => handleUserDeleteUser(user?.id!)} className="deleteUser red">Supprimé votre compte</button>
       </div>
     </div>
   );

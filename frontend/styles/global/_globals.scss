@@ -3,9 +3,9 @@
 #__next {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 100px 1fr 0.3fr;
+  grid-template-rows: 65px 1fr 0.3fr;
   grid-column-gap: 0px;
-  grid-row-gap: 0px; 
+  grid-row-gap: 0px;
 }
 
 nav {
@@ -21,7 +21,7 @@ footer {
   grid-area: 3 / 1 / 4 / 2;
 }
 
-.disableSelection{
+.disableSelection {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -29,140 +29,122 @@ footer {
   -ms-user-select: none;
   user-select: none;
   outline: 0;
-  }
+}
+
+.red{
+  color: red;
+}
 
 .searchBack {
-  position: relative;
-  top: -50px;
-  background: $color-Primary;
+  margin-top: 50px;
+  background: $color-Secondary;
   text-align: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 0px 0px 10px 10px;
-
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-
-  gap: 30px;
-
-  margin-left: 20px;
-  margin-right: 20px;
-
-  width: calc(100% - 40px);
-
-  padding: 0 5px 5px 5px;
+  justify-content: flex-start;
+  border-radius: 10px;
+  padding: 10px;
+  gap: 0px;
 
   @include bp("tablette") {
-    top: -100px;
-  }
-  @include bp("laptop") {
-    padding: 0 30px 5px 30px;
-  }
-  @include bp("computer") {
-    width: calc(100% - 260px);
-    margin-right: 130px;
-    margin-left: 130px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 775px;
+    margin-top: 100px;
   }
 
-  h2{
-    margin-top: 20px;
+  @include bp("laptop") {
+    margin-top: 200px;
   }
-  .search {
-    min-height: 100px;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.2) 0%,
-        rgba(0, 0, 0, 0.8) 100%
-      ),
-      url("/images/Slider1.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+
+  .sepH{
+    @include bp("tablette") {
+      display: none;
+    }
+  }
+
+  .sepV{
+    display: none;
+    @include bp("tablette") {
+      display: inline-block;
+    }
+  }
+
+  .inputContain{
     width: 100%;
-    min-height: 200px;
-    border-radius: 0px 0px 10px 10px;
-    padding: 30px 0 30px 0;
+    height: 60px;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 10px;
+    @include bp("tablette") {
+      align-items: center;
+      width: 35%;
+      height: 40px;
+      padding-bottom: 0px;
+    }
+    img{
+      position: relative;
+      left: 20px;
+
+    }
+  }
+  *:focus {
+    outline: none;
+  }
+  label {
+  }
+
+  input::placeholder {
+    font-family: "Montserrat";
+    font-weight: 700;
+    font-size: 1rem;
+
+    color: rgba($color: #6A6968, $alpha: 0.5);
+    text-transform: capitalize;
+  }
+
+  p{
+    color: #ffffff;
+  }
+
+
+  input {
+    padding-left: 35px;
+    width: 100%;
+    height: 25px;
+
+    border: none;
+    background: #ffffff;
+    caret-color: #6A6968;
+
+    font-family: "Montserrat";
+    font-weight: 700;
+    font-size: 1.4rem;
+
+    color: #101010;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  button {
+    width: 100%;
+    height: 45px;
+    background: #6A6968;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-top: 40px;
 
     @include bp("tablette") {
-      min-height: 250px;
-    }
-
-    @include bp("laptop") {
-      min-height: 250px;
-    }
-
-    form {
-      height: 100%;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 30px;
-
-      @include bp("tablette") {
-        flex-direction: row;
-      }
-      *:focus {
-        outline: none;
-      }
-      label {
-      }
-
-      .searchBar {
-        background: url("/images/form/search.png");
-      }
-
-      .localisationBar {
-        background: url("/images/form/localisation.png");
-      }
-
-      input::placeholder {
-        font-family: "Montserrat";
-        font-weight: 700;
-        font-size: 1rem;
-        text-transform: uppercase;
-
-        color: #6a6968;
-      }
-
-      input {
-        width: 300px;
-        height: 45px;
-        padding-left: 15px;
-
-        border: none;
-        background: #ffffff;
-        border-bottom: 1px solid #101010;
-        border-radius: 0px 0px 10px 10px;
-        caret-color: $color-main;
-
-        font-family: "Montserrat";
-        font-weight: 700;
-        font-size: 1.4rem;
-
-        color: #101010;
-      }
-
-      button {
-        width: 165px;
-        height: 45px;
-        background: #ffffff;
-        background: url("/images/form/submit.png");
-        border: none;
-        border-bottom: 1px solid #101010;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 0px 0px 10px 10px;
-        padding-left: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-      }
+      width: 20%;
+      margin-top: 0px;
     }
   }
 }
@@ -186,13 +168,13 @@ footer {
 }
 
 .sepH {
-  width: 300px;
-  height: 4px;
-  background: #c9c0b6;
+  width: 100%;
+  height: 1px;
+  background: #6A6968;
 }
 
 .sepV {
-  width: 4px;
-  height: 300px;
-  background: #c9c0b6;
+  width: 1px;
+  height: 100%;
+  background: #6A6968;
 }
