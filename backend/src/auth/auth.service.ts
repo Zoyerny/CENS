@@ -392,7 +392,6 @@ export class AuthService {
         updatedAt: true,
       },
     })
-    console.log(article)
     return { article }
   }
   async getMultipleArticle(id: string) {

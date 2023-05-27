@@ -8,7 +8,6 @@ import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { ArticleData } from "..";
 import { GET_ONEARTICLE_QUERY } from "@/graphql/articles/getOneArticle.query";
 export default function ModifyWrite() {
-  const [nav, setNav] = useState<Number>(0);
   const [articleName, setArticleName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -83,8 +82,7 @@ export default function ModifyWrite() {
       setDescription(articleres.description);
       setContent(articleres.content);
       setTag(articleres.tag.toString());
-      setSelectedImage(`/uploads/b5fe7cd1-6dc8-4272-9504-bad19886c6f6`);
-
+      setSelectedImage(articleres.image);
     }
   }, [articleData]);
 
@@ -94,9 +92,6 @@ export default function ModifyWrite() {
     }
   }, [articleError]);
 
-  useEffect(() => {
-    handleReloadDataArticles();
-  }, [nav]);
   return (
     <div id="write">
       <h2>Ecrire un Article</h2>
@@ -107,122 +102,120 @@ export default function ModifyWrite() {
         >
           Leave
         </button>
-        {nav === 0 && (
-          <form
-            id="WriteForm"
-            autoComplete="off"
-            onSubmit={(event) => handleUpdateArticle(event)}
-          >
-            <div className="wrap">
-              <div className="group">
-                <div className="content">
-                  <label htmlFor="name">Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    autoFocus
-                    required
-                    value={articleName}
-                    onChange={(e) => setArticleName(e.target.value)}
-                  />
-                </div>
-                <div className="content">
-                  <label htmlFor="description">Description</label>
-                  <textarea
-                    rows={3}
-                    cols={33}
-                    name="description"
-                    id="description"
-                    maxLength={90}
-                    required
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </div>
-              </div>
-
+        <form
+          id="WriteForm"
+          autoComplete="off"
+          onSubmit={(event) => handleUpdateArticle(event)}
+        >
+          <div className="wrap">
+            <div className="group">
               <div className="content">
-                <label htmlFor="content">Content</label>
-                <textarea
-                  className="contentText"
-                  rows={5}
-                  cols={33}
-                  name="content"
-                  id="content"
+                <label htmlFor="name">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  autoFocus
                   required
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
+                  value={articleName}
+                  onChange={(e) => setArticleName(e.target.value)}
                 />
               </div>
               <div className="content">
-                <label htmlFor="tag">tag s’éparer par une ’ , ’</label>
+                <label htmlFor="description">Description</label>
                 <textarea
-                  rows={2}
+                  rows={3}
                   cols={33}
-                  name="tag"
-                  id="tag"
+                  name="description"
+                  id="description"
+                  maxLength={90}
                   required
-                  value={tag}
-                  onChange={(e) => setTag(e.target.value)}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
-              </div>
-              <div className="content">
-                <label>
-                  <input
-                    type="file"
-                    hidden
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                      const file = event.target.files?.[0];
-
-                      if (file) {
-                        const allowedTypes = [
-                          "image/jpeg",
-                          "image/png",
-                          "image/gif",
-                        ];
-                        if (!allowedTypes.includes(file.type)) {
-                          // Gérer le cas où le fichier n'est pas une image
-                          console.log(
-                            "Le fichier sélectionné n'est pas une image"
-                          );
-                          setSelectedImage("");
-                          setSelectedFile(null);
-                          return;
-                        } else {
-                          setSelectedImage(URL.createObjectURL(file));
-                          setSelectedFile(file);
-                        }
-                      }
-                    }}
-                  />
-                  <div>
-                    {selectedImage ? (
-                      <Image
-                        src={selectedImage}
-                        width={100}
-                        height={100}
-                        alt=""
-                      />
-                    ) : (
-                      <span>Select Image</span>
-                    )}
-                  </div>
-                </label>
               </div>
             </div>
-            <button type="submit">Send</button>
-            {error && (
-              <div>
-                {error.graphQLErrors.map(({ message }, i) => (
-                  <span className="red" key={i}>
-                    {message}
-                  </span>
-                ))}
-              </div>
-            )}
-          </form>
-        )}
+
+            <div className="content">
+              <label htmlFor="content">Content</label>
+              <textarea
+                className="contentText"
+                rows={5}
+                cols={33}
+                name="content"
+                id="content"
+                required
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </div>
+            <div className="content">
+              <label htmlFor="tag">tag s’éparer par une ’ , ’</label>
+              <textarea
+                rows={2}
+                cols={33}
+                name="tag"
+                id="tag"
+                required
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+              />
+            </div>
+            <div className="content">
+              <label>
+                <input
+                  type="file"
+                  hidden
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    const file = event.target.files?.[0];
+
+                    if (file) {
+                      const allowedTypes = [
+                        "image/jpeg",
+                        "image/png",
+                        "image/gif",
+                      ];
+                      if (!allowedTypes.includes(file.type)) {
+                        // Gérer le cas où le fichier n'est pas une image
+                        console.log(
+                          "Le fichier sélectionné n'est pas une image"
+                        );
+                        setSelectedImage("");
+                        setSelectedFile(null);
+                        return;
+                      } else {
+                        setSelectedImage(URL.createObjectURL(file));
+                        setSelectedFile(file);
+                      }
+                    }
+                  }}
+                />
+                <div>
+                  {selectedImage ? (
+                    <Image
+                      src={selectedImage}
+                      width={100}
+                      height={100}
+                      alt=""
+                    />
+                  ) : (
+                    <span>Select Image</span>
+                  )}
+                </div>
+              </label>
+            </div>
+          </div>
+          <button type="submit">Send</button>
+          {error && (
+            <div>
+              {error.graphQLErrors.map(({ message }, i) => (
+                <span className="red" key={i}>
+                  {message}
+                </span>
+              ))}
+            </div>
+          )}
+        </form>
       </div>
     </div>
   );

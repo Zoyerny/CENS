@@ -5,6 +5,7 @@ import { useAuth } from "@/utils/contexts/auth-context";
 import { useMutation } from "@apollo/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { destroyCookie } from "nookies";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Profile() {
@@ -54,6 +55,12 @@ export default function Profile() {
       .then((result) => {
         if (result.data) {
           console.log("Deleted user :", result.data.deleteUser.changed);
+          setUser(null);
+          setAccessToken(null);
+          setRefreshToken(null);
+          destroyCookie(undefined, "cookieUser");
+          destroyCookie(undefined, "cookieAccessToken");
+          destroyCookie(undefined, "cookieRefreshToken");
           router.push("/")
         }
       })

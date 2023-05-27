@@ -38,8 +38,10 @@ const handler: NextApiHandler = async (req, res) => {
     }
 
     const result = await readFile(req, true);
-    const data = result.files.myImage
-    res.json(data);
+    const host = req.headers.host;
+    const fileName = result.files.myImage;
+    
+    res.json({host: host, file:fileName, });
 }
 
 export default handler;

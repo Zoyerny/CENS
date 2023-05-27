@@ -47,7 +47,7 @@ export default function Write() {
     DeleteArticle({ variables: { id: id } })
       .then((result) => {
         if (result.data) {
-          console.log("Deleted Article :", result.data.deleteUser.changed);
+          console.log("Deleted Article :", result.data.deleteArticle.changed);
           handleReloadDataArticles();
         }
       })
@@ -75,7 +75,7 @@ export default function Write() {
         formData.append("articleTitle", "selectedFile");
         formData.append("myImage", selectedFile);
         const { data } = await axios.post("/api/upload", formData);
-        const image: string = data.filepath;
+        const image: string = `http://${data.host}/uploads/${data.file.newFilename}`;
         const tags = tag.split(",").map((tag) => tag.trim());
         createArticle({
           variables: {
@@ -85,7 +85,7 @@ export default function Write() {
               description: description,
               content: content,
               tags: tags,
-              image: image,  
+              image: image,
             },
           },
         })
@@ -265,7 +265,10 @@ export default function Write() {
                 name="allArticle"
                 id="allArticle"
                 defaultChecked={allArticles}
-                onChange={(e) => setAllArticles(e.target.checked)}
+                onChange={(e) => {
+                  setAllArticles(e.target.checked);
+                  console.log(allArticles);
+                }}
               />
             </div>
             {[...articles]
@@ -305,20 +308,6 @@ export default function Write() {
                     </button>
                     {modalArticles === article.id && (
                       <ul className="optionsModal">
-                        <li>
-                          <button
-                            className={`navTextPc`}
-                            onClick={() => console.log("Promote to praticien")}
-                          >
-                            {article.validate ? (
-                              <span className="red">
-                                Remove validate Article
-                              </span>
-                            ) : (
-                              <span>Validate Article</span>
-                            )}
-                          </button>
-                        </li>
                         <li>
                           <button
                             className={`navTextPc`}

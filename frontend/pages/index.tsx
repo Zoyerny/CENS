@@ -1,11 +1,35 @@
+import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { ArticleData } from "./acount";
+import { GET_ARTICLES_QUERY } from "@/graphql/articles/getArticles.query";
 
 export default function Home() {
+  const [articles, setArticles] = useState<ArticleData[]>([]);
   const handleSearch = (event: FormEvent) => {
     event.preventDefault();
   };
+
+  const {
+    data: articlesData,
+    error: articlesError,
+    refetch: articlesRefetch,
+  } = useQuery<{
+    getArticles: { articles: ArticleData[] };
+  }>(GET_ARTICLES_QUERY);
+
+  useEffect(() => {
+    if (articlesError) {
+      console.error(articlesError);
+    }
+  }, [articlesError]);
+
+  useEffect(() => {
+    if (articlesData) {
+      setArticles(articlesData.getArticles.articles);
+    }
+  }, [articlesData]);
 
   return (
     <div id="home">
@@ -39,15 +63,8 @@ export default function Home() {
           </div>
           <div className="sepH" />
           <button className="submit" type="submit">
-            <p className="medium">
-              RECHERCHER
-            </p>
-            <Image
-                src="/svg/send.svg"
-                width={20}
-                height={23}
-                alt="article"
-              />
+            <p className="medium">RECHERCHER</p>
+            <Image src="/svg/send.svg" width={20} height={23} alt="article" />
           </button>
         </form>
       </header>
@@ -55,67 +72,29 @@ export default function Home() {
       <section id="articleBack">
         <h2>Article Populaire</h2>
         <article>
-          <div className="article">
-            <Image
-              src="/images/article/article1.jpg"
-              width={200}
-              height={200}
-              alt="article"
-            />
-            <div className="contentArticle">
-              <h3>Se révélé a soi</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                vestibulum aliquet eros vitae
-              </p>
-            </div>
-          </div>
-          <div className="article">
-            <Image
-              src="/images/article/article1.jpg"
-              width={200}
-              height={200}
-              alt="article"
-            />
-            <div className="contentArticle">
-              <h3>Se révélé a soi</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                vestibulum aliquet eros vitae
-              </p>
-            </div>
-          </div>
-          <div className="article">
-            <Image
-              src="/images/article/article1.jpg"
-              width={200}
-              height={200}
-              alt="article"
-            />
-            <div className="contentArticle">
-              <h3>Se révélé a soi</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                vestibulum aliquet eros vitae
-              </p>
-            </div>
-          </div>
-          <div className="article">
-            <Image
-              src="/images/article/article1.jpg"
-              width={200}
-              height={200}
-              alt="article"
-            />
-            <div className="contentArticle">
-              <h3>Se révélé a soi</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                vestibulum aliquet eros vitae
-              </p>
-            </div>
-          </div>
-        </article>{" "}
+          {[...articles]
+            .filter((article) => article.validate)
+            .sort((a, b) => b.like - a.like)
+            .slice(0, 4)
+            .map((article) => (
+              <Link
+                href={`/articles/${article.id}`}
+                className="article"
+                key={article.id}
+              >
+                <Image
+                  src={article.image}
+                  width={200}
+                  height={200}
+                  alt="article"
+                />
+                <div className="contentArticle">
+                  <h3>{article.name}</h3>
+                  <p>{article.description}</p>
+                </div>
+              </Link>
+            ))}
+        </article>
         <Link className="clearButton" href={"/articles"}>
           Voir plus
         </Link>
